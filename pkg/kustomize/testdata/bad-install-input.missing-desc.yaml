@@ -1,0 +1,5 @@
+install:
+- kustomize:
+    name: wordpress
+    chart: stable/wordpress
+    description: ""

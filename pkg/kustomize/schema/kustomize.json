@@ -1,0 +1,232 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "installStep": {
+      "type": "object",
+      "properties": {
+        "kustomize": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "$ref": "#/definitions/stepDescription"
+            },
+            "name": {
+              "type": "string"
+            },
+            "namespace": {
+              "type": "string"
+            },
+            "chart": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "replace": {
+              "type": "boolean"
+            },
+            "wait": {
+              "type": "boolean"
+            },
+            "devel": {
+              "type": "boolean"
+            },
+            "set": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "outputs": {
+              "$ref": "#/definitions/outputs"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "description",
+            "chart"
+          ]
+        }
+      },
+      "required": [
+        "kustomize"
+      ],
+      "additionalProperties": false
+    },
+    "upgradeStep": {
+      "type": "object",
+      "properties": {
+        "kustomize": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "$ref": "#/definitions/stepDescription"
+            },
+            "name": {
+              "type": "string"
+            },
+            "namespace": {
+              "type": "string"
+            },
+            "chart": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "wait": {
+              "type": "boolean",
+              "default": false
+            },
+            "set": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "resetValues": {
+              "type": "boolean",
+              "default": false
+            },
+            "reuseValues": {
+              "type": "boolean",
+              "default": false
+            },
+            "outputs": {
+              "$ref": "#/definitions/outputs"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "description",
+            "chart"
+          ]
+        }
+      },
+      "required": [
+        "kustomize"
+      ]
+    },
+    "statusStep": {
+      "type": "object",
+      "properties": {
+        "kustomize": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "$ref": "#/definitions/stepDescription"
+            },
+            "releases": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minItems": 1
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "description",
+            "releases"
+          ]
+        }
+      },
+      "required": [
+        "kustomize"
+      ]
+    },
+    "uninstallStep": {
+      "type": "object",
+      "properties": {
+        "kustomize": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "$ref": "#/definitions/stepDescription"
+            },
+            "releases": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "purge": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "description",
+            "releases"
+          ]
+        }
+      },
+      "required": [
+        "kustomize"
+      ]
+    },
+    "stepDescription": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "secret": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["name", "secret", "key"]
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "install": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/installStep"
+      }
+    },
+    "upgrade": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/upgradeStep"
+      }
+    },
+    "status": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/statusStep"
+      }
+    },
+    "uninstall": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/uninstallStep"
+      }
+    }
+  },
+  "additionalProperties": false
+}

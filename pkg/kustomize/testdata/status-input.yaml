@@ -1,0 +1,5 @@
+status:
+- kustomize:
+    description: "Status MySQL"
+    releases:
+    - porter-ci-mysql
