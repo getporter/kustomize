@@ -1,0 +1,79 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Each entry in this list should resolve to a directory
+# containing a kustomization file, else the
+# customization fails.
+#
+# The entry could be a relative path pointing to a local directory
+# or a url pointing to a directory in a remote repo.
+# The url should follow hashicorp/go-getter URL format
+# https://github.com/hashicorp/go-getter#url-format
+#
+# The presence of this field means this file (the file
+# you a reading) is an _overlay_ that further
+# customizes information coming from these _bases_.
+#
+# Typical use case: a dev, staging and production
+# environment that are mostly identical but differing
+# crucial ways (image tags, a few server arguments,
+# etc. that differ from the common base).
+bases:
+# To use the 'all-in-one' repository you can speed things
+# up by using local paths instead of calling back to the
+# same GitHub repo.
+
+#- ../../../../../../build/k8s/base/deployment
+#- ../../../../../../build/k8s/base/service
+
+# Where multiple teams manage different aspects of the
+# configuration e.g. base, infrastructure, applications
+# you should point directly you need to split this repository
+# into the parts ownded by each team 
+
+# e.g. base to one repo for the owning team
+# and each app team to their own repos maybe one per
+# application or namespace etc.
+
+# component and ensure that the user has read permissions
+# on the repo. Slower than local files due to the network
+# pull of the artifaces. 
+#
+# NOTE: The doube slash // is necessary. It marks the end
+# of the URL and the start of the path 
+# i.e. github.com/docker/cs-mvp-stacks/ + /build/k8s/base/deployment
+- git::https://github.com/docker/cs-mvp-stacks//build/k8s/base/deployment?ref=master
+- git::https://github.com/docker/cs-mvp-stacks//build/k8s/base/service?ref=master
+
+
+namespace: robotshop
+
+patchesJson6902:
+- target:
+    group: extensions
+    version: v1beta1
+    kind: Deployment
+    name: deployment
+  path: replace_app_name_patch.yaml
+- target:
+    version: v1
+    kind: Service
+    name: service
+  path: replace_svc_name_patch.yaml
+
+patchesStrategicMerge:
+  - deployment.yaml
+  - service.yaml
+
+commonLabels:
+  com.docker.enterprise.app: cart
+
+# Annotations (non-identifying metadata)
+# to add to all resources.  Like labels,
+# these are key value pairs.
+commonAnnotations:
+  com.docker.enterprise.app.tribe: robot-shop-tribe
+
+images:
+- name: dummy-image
+  newName: rs-cart

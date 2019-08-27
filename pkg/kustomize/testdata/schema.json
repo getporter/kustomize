@@ -16,7 +16,7 @@
             "namespace": {
               "type": "string"
             },
-            "chart": {
+            "kustomization": {
               "type": "string"
             },
             "version": {
@@ -49,7 +49,7 @@
           "required": [
             "name",
             "description",
-            "chart"
+            "kustomization"
           ]
         }
       },
@@ -73,7 +73,7 @@
             "namespace": {
               "type": "string"
             },
-            "chart": {
+            "kustomization": {
               "type": "string"
             },
             "version": {
@@ -109,7 +109,7 @@
           "required": [
             "name",
             "description",
-            "chart"
+            "kustomization"
           ]
         }
       },

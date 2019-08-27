@@ -1,5 +1,5 @@
 install:
 - kustomize:
     name: wordpress
-    chart: stable/wordpress
+    kustomization: stable/wordpress
     description: ""

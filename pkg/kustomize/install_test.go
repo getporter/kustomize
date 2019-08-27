@@ -24,7 +24,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestMixin_UnmarshalInstallStep(t *testing.T) {
-	b, err := ioutil.ReadFile("testdata/install-input.yaml")
+	b, err := ioutil.ReadFile("testdata/robotshop/porter.yaml")
 	require.NoError(t, err)
 
 	var action InstallAction
@@ -38,28 +38,28 @@ func TestMixin_UnmarshalInstallStep(t *testing.T) {
 	assert.Equal(t, KustomizeOutput{"mysql-root-password", "porter-ci-mysql", "mysql-root-password"}, step.Outputs[0])
 
 	assert.Equal(t, "porter-ci-mysql", step.Name)
-	assert.Equal(t, "stable/mysql", step.Chart)
-	assert.Equal(t, "0.10.2", step.Version)
-	assert.Equal(t, true, step.Replace)
-	assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser",
-		"livenessProbe.initialDelaySeconds": "30", "persistence.enabled": "true"}, step.Set)
+	assert.Equal(t, "stable/mysql", step.Kustomization)
+	//assert.Equal(t, "0.10.2", step.Version)
+	//assert.Equal(t, true, step.Replace)
+	//assert.Equal(t, map[string]string{"mysqlDatabase": "mydb", "mysqlUser": "myuser",
+	//	"livenessProbe.initialDelaySeconds": "30", "persistence.enabled": "true"}, step.Set)
 }
 
 func TestMixin_Install(t *testing.T) {
 	namespace := "MYNAMESPACE"
 	name := "MYRELEASE"
-	chart := "MYCHART"
+	kustomization := "MYKUSTOMIZATION"
 	version := "1.0.0"
-	setArgs := map[string]string{
-		"foo": "bar",
-		"baz": "qux",
-	}
-	values := []string{
-		"/tmp/val1.yaml",
-		"/tmp/val2.yaml",
-	}
+	//setArgs := map[string]string{
+	//	"foo": "bar",
+	//	"baz": "qux",
+	//}
+	//values := []string{
+	//	"/tmp/val1.yaml",
+	//	"/tmp/val2.yaml",
+	//}
 
-	baseInstall := fmt.Sprintf(`kustomize install --name %s %s --namespace %s --version %s`, name, chart, namespace, version)
+	baseInstall := fmt.Sprintf(`kustomize build --name %s %s --namespace %s --version %s`, name, kustomization, namespace, version)
 	baseValues := `--values /tmp/val1.yaml --values /tmp/val2.yaml`
 	baseSetArgs := `--set baz=qux --set foo=bar`
 
@@ -68,13 +68,13 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s`, baseInstall, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
-					Step:      Step{Description: "Install Foo"},
-					Namespace: namespace,
-					Name:      name,
-					Chart:     chart,
-					Version:   version,
-					Set:       setArgs,
-					Values:    values,
+					Step:          Step{Description: "Install Foo"},
+					Namespace:     namespace,
+					Name:          name,
+					Kustomization: kustomization,
+					//				Version:   		version,
+					//				Set:       		setArgs,
+					//				Values:    		values,
 				},
 			},
 		},
@@ -82,14 +82,14 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--replace`, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
-					Step:      Step{Description: "Install Foo"},
-					Namespace: namespace,
-					Name:      name,
-					Chart:     chart,
-					Version:   version,
-					Set:       setArgs,
-					Values:    values,
-					Replace:   true,
+					Step:          Step{Description: "Install Foo"},
+					Namespace:     namespace,
+					Name:          name,
+					Kustomization: kustomization,
+					//				Version:   		version,
+					//				Set:       		setArgs,
+					//				Values:    		values,
+					//				Replace:   		true,
 				},
 			},
 		},
@@ -97,14 +97,14 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--devel`, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
-					Step:      Step{Description: "Install Foo"},
-					Namespace: namespace,
-					Name:      name,
-					Chart:     chart,
-					Version:   version,
-					Set:       setArgs,
-					Values:    values,
-					Devel:     true,
+					Step:          Step{Description: "Install Foo"},
+					Namespace:     namespace,
+					Name:          name,
+					Kustomization: kustomization,
+					//				Version:   		version,
+					//				Set:       		setArgs,
+					//				Values:    		values,
+					//				Devel:     		true,
 				},
 			},
 		},
@@ -112,14 +112,14 @@ func TestMixin_Install(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseInstall, `--wait`, baseValues, baseSetArgs),
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
-					Step:      Step{Description: "Install Foo"},
-					Namespace: namespace,
-					Name:      name,
-					Chart:     chart,
-					Version:   version,
-					Set:       setArgs,
-					Values:    values,
-					Wait:      true,
+					Step:          Step{Description: "Install Foo"},
+					Namespace:     namespace,
+					Name:          name,
+					Kustomization: kustomization,
+					//				Version:   		version,
+					//				Set:       		setArgs,
+					//				Values:    		values,
+					Wait: true,
 				},
 			},
 		},

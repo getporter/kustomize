@@ -2,7 +2,7 @@ upgrade:
 - kustomize:
     description: "Upgrade MySQL"
     name: porter-ci-mysql
-    chart: stable/mysql
+    kustomization: stable/mysql
     version: 0.10.2
     wait: true
     resetValues: true

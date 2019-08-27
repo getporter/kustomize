@@ -2,11 +2,10 @@ package kustomize
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/pkg/errors"
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 type InstallAction struct {
@@ -20,15 +19,18 @@ type InstallStep struct {
 type InstallArguments struct {
 	Step `yaml:",inline"`
 
-	Namespace string            `yaml:"namespace"`
-	Name      string            `yaml:"name"`
-	Chart     string            `yaml:"chart"`
-	Version   string            `yaml:"version"`
-	Replace   bool              `yaml:"replace"`
-	Set       map[string]string `yaml:"set"`
-	Values    []string          `yaml:"values"`
-	Devel     bool              `yaml:"devel`
-	Wait      bool              `yaml:"wait"`
+	Namespace     string `yaml:"namespace"`
+	Name          string `yaml:"name"`
+	Kustomization string `yaml:"kustomization"`
+	/*
+		Version   		string            `yaml:"version"`
+		Replace   		bool              `yaml:"replace"`
+		Set       		map[string]string `yaml:"set"`
+		Values    		[]string          `yaml:"values"`
+		Devel     		bool              `yaml:"devel`
+
+	*/
+	Wait bool `yaml:"wait"`
 }
 
 func (m *Mixin) Install() error {
@@ -52,42 +54,47 @@ func (m *Mixin) Install() error {
 	}
 	step := action.Steps[0]
 
-	cmd := m.NewCommand("kustomize", "install", "--name", step.Name, step.Chart)
+	//cmd := m.NewCommand("kustomize", "build", "--name", step.Name, step.Kustomization)
+	cmd := m.NewCommand("kustomize", "build", step.Kustomization)
 
-	if step.Namespace != "" {
-		cmd.Args = append(cmd.Args, "--namespace", step.Namespace)
-	}
+	/*
+		if step.Namespace != "" {
+			cmd.Args = append(cmd.Args, "--namespace", step.Namespace)
+		}
 
-	if step.Version != "" {
-		cmd.Args = append(cmd.Args, "--version", step.Version)
-	}
+		if step.Version != "" {
+			cmd.Args = append(cmd.Args, "--version", step.Version)
+		}
 
-	if step.Replace {
-		cmd.Args = append(cmd.Args, "--replace")
-	}
+		if step.Replace {
+			cmd.Args = append(cmd.Args, "--replace")
+		}
 
-	if step.Wait {
-		cmd.Args = append(cmd.Args, "--wait")
-	}
+		if step.Wait {
+			cmd.Args = append(cmd.Args, "--wait")
+		}
 
-	if step.Devel {
-		cmd.Args = append(cmd.Args, "--devel")
-	}
+		if step.Devel {
+			cmd.Args = append(cmd.Args, "--devel")
+		}
 
-	for _, v := range step.Values {
-		cmd.Args = append(cmd.Args, "--values", v)
-	}
+		for _, v := range step.Values {
+			cmd.Args = append(cmd.Args, "--values", v)
+		}
 
-	// sort the set consistently
-	setKeys := make([]string, 0, len(step.Set))
-	for k := range step.Set {
-		setKeys = append(setKeys, k)
-	}
-	sort.Strings(setKeys)
+		// sort the set consistently
+		setKeys := make([]string, 0, len(step.Set))
+		for k := range step.Set {
+			setKeys = append(setKeys, k)
+		}
+		sort.Strings(setKeys)
 
-	for _, k := range setKeys {
-		cmd.Args = append(cmd.Args, "--set", fmt.Sprintf("%s=%s", k, step.Set[k]))
-	}
+		for _, k := range setKeys {
+			cmd.Args = append(cmd.Args, "--set", fmt.Sprintf("%s=%s", k, step.Set[k]))
+		}
+
+
+	*/
 
 	cmd.Stdout = m.Out
 	cmd.Stderr = m.Err

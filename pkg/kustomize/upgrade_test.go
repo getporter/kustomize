@@ -33,7 +33,7 @@ func TestMixin_UnmarshalUpgradeStep(t *testing.T) {
 	assert.Equal(t, KustomizeOutput{"mysql-root-password", "porter-ci-mysql", "mysql-root-password"}, step.Outputs[0])
 
 	assert.Equal(t, "porter-ci-mysql", step.Name)
-	assert.Equal(t, "stable/mysql", step.Chart)
+	assert.Equal(t, "stable/mysql", step.Kustomization)
 	assert.Equal(t, "0.10.2", step.Version)
 	assert.True(t, step.Wait)
 	assert.True(t, step.ResetValues)
@@ -45,7 +45,7 @@ func TestMixin_UnmarshalUpgradeStep(t *testing.T) {
 func TestMixin_Upgrade(t *testing.T) {
 	namespace := "MYNAMESPACE"
 	name := "MYRELEASE"
-	chart := "MYCHART"
+	kustomization := "MYKUSTOMIZATION"
 	version := "1.0.0"
 	setArgs := map[string]string{
 		"foo": "bar",
@@ -56,7 +56,7 @@ func TestMixin_Upgrade(t *testing.T) {
 		"/tmp/val2.yaml",
 	}
 
-	baseUpgrade := fmt.Sprintf(`kustomize upgrade %s %s --namespace %s --version %s`, name, chart, namespace, version)
+	baseUpgrade := fmt.Sprintf(`kustomize upgrade %s %s --namespace %s --version %s`, name, kustomization, namespace, version)
 	baseValues := `--values /tmp/val1.yaml --values /tmp/val2.yaml`
 	baseSetArgs := `--set baz=qux --set foo=bar`
 
@@ -65,13 +65,13 @@ func TestMixin_Upgrade(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s`, baseUpgrade, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
-					Step:      Step{Description: "Upgrade Foo"},
-					Namespace: namespace,
-					Name:      name,
-					Chart:     chart,
-					Version:   version,
-					Set:       setArgs,
-					Values:    values,
+					Step:          Step{Description: "Upgrade Foo"},
+					Namespace:     namespace,
+					Name:          name,
+					Kustomization: kustomization,
+					Version:       version,
+					Set:           setArgs,
+					Values:        values,
 				},
 			},
 		},
@@ -79,14 +79,14 @@ func TestMixin_Upgrade(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reset-values`, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
-					Step:        Step{Description: "Upgrade Foo"},
-					Namespace:   namespace,
-					Name:        name,
-					Chart:       chart,
-					Version:     version,
-					Set:         setArgs,
-					Values:      values,
-					ResetValues: true,
+					Step:          Step{Description: "Upgrade Foo"},
+					Namespace:     namespace,
+					Name:          name,
+					Kustomization: kustomization,
+					Version:       version,
+					Set:           setArgs,
+					Values:        values,
+					ResetValues:   true,
 				},
 			},
 		},
@@ -94,14 +94,14 @@ func TestMixin_Upgrade(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reuse-values`, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
-					Step:        Step{Description: "Upgrade Foo"},
-					Namespace:   namespace,
-					Name:        name,
-					Chart:       chart,
-					Version:     version,
-					Set:         setArgs,
-					Values:      values,
-					ReuseValues: true,
+					Step:          Step{Description: "Upgrade Foo"},
+					Namespace:     namespace,
+					Name:          name,
+					Kustomization: kustomization,
+					Version:       version,
+					Set:           setArgs,
+					Values:        values,
+					ReuseValues:   true,
 				},
 			},
 		},
@@ -109,14 +109,14 @@ func TestMixin_Upgrade(t *testing.T) {
 			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--wait`, baseValues, baseSetArgs),
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
-					Step:      Step{Description: "Upgrade Foo"},
-					Namespace: namespace,
-					Name:      name,
-					Chart:     chart,
-					Version:   version,
-					Set:       setArgs,
-					Values:    values,
-					Wait:      true,
+					Step:          Step{Description: "Upgrade Foo"},
+					Namespace:     namespace,
+					Name:          name,
+					Kustomization: kustomization,
+					Version:       version,
+					Set:           setArgs,
+					Values:        values,
+					Wait:          true,
 				},
 			},
 		},

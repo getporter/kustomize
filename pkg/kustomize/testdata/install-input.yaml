@@ -1,19 +1,19 @@
 install:
-- kustomize:
-    description: "Install MySQL"
-    name: porter-ci-mysql
-    chart: stable/mysql
-    version: 0.10.2
-    replace: true
-    set:
-      mysqlDatabase: mydb
-      mysqlUser: myuser
-      livenessProbe.initialDelaySeconds: 30
-      persistence.enabled: true
-    outputs:
-      - name: mysql-root-password
-        secret: porter-ci-mysql
-        key: mysql-root-password
-      - name: mysql-password
-        secret: porter-ci-mysql
-        key: mysql-password
+  - kustomize:
+      description: "Install MySQL"
+      name: porter-ci-mysql
+      kustomization: stable/mysql
+      version: 0.10.2
+      replace: true
+      set:
+        mysqlDatabase: mydb
+        mysqlUser: myuser
+        livenessProbe.initialDelaySeconds: 30
+        persistence.enabled: true
+      outputs:
+        - name: mysql-root-password
+          secret: porter-ci-mysql
+          key: mysql-root-password
+        - name: mysql-password
+          secret: porter-ci-mysql
+          key: mysql-password

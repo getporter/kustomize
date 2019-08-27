@@ -22,15 +22,15 @@ type UpgradeStep struct {
 type UpgradeArguments struct {
 	Step `yaml:",inline"`
 
-	Namespace   string            `yaml:"namespace"`
-	Name        string            `yaml:"name"`
-	Chart       string            `yaml:"chart"`
-	Version     string            `yaml:"version"`
-	Set         map[string]string `yaml:"set"`
-	Values      []string          `yaml:"values"`
-	Wait        bool              `yaml:"wait"`
-	ResetValues bool              `yaml:"resetValues"`
-	ReuseValues bool              `yaml:"reuseValues"`
+	Namespace     string            `yaml:"namespace"`
+	Name          string            `yaml:"name"`
+	Kustomization string            `yaml:"kustomization"`
+	Version       string            `yaml:"version"`
+	Set           map[string]string `yaml:"set"`
+	Values        []string          `yaml:"values"`
+	Wait          bool              `yaml:"wait"`
+	ResetValues   bool              `yaml:"resetValues"`
+	ReuseValues   bool              `yaml:"reuseValues"`
 }
 
 // Upgrade issues a kustomize upgrade command for a release using the provided UpgradeArguments
@@ -55,7 +55,7 @@ func (m *Mixin) Upgrade() error {
 	}
 	step := action.Steps[0]
 
-	cmd := m.NewCommand("kustomize", "upgrade", step.Name, step.Chart)
+	cmd := m.NewCommand("kustomize", "upgrade", step.Name, step.Kustomization)
 
 	if step.Namespace != "" {
 		cmd.Args = append(cmd.Args, "--namespace", step.Namespace)
