@@ -2,17 +2,19 @@ name: robotshop-bundle
 version: 0.3.2
 description: "Stans Robotshop Example"
 
+parameters:
+  - name: gh_token
+    type: string
+    default: gh_token
+
 install:
   - kustomize:
       description: "Generate the Kubernetes deployment file the Shopping Cart"
-      name: porter-ci-robotshop-cart
+      name: porter-robotshop-cart
       kustomization: kustomize/robotshop/overlays/local/cart
       version: 0.3.2
-      replace: true
-      outputs:
-        - name: mysql-root-password
-          type: string
-          key: mysql-root-password
+      set:
+        kustomizeBaseGHToken: "{{ bundle.parameters.gh_token }}"
 
   - kubernetes:
       description: "Deploy the Shopping Cart"

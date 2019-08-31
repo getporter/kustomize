@@ -1,12 +1,11 @@
 package kustomize
 
 import (
-	"fmt"
-	"strings"
+	"os/exec"
 
 	"github.com/pkg/errors"
 
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 type UninstallAction struct {
@@ -22,8 +21,11 @@ type UninstallStep struct {
 type UninstallArguments struct {
 	Step `yaml:",inline"`
 
-	Releases []string `yaml:"releases"`
-	Purge    bool     `yaml:"purge"`
+	Name          string            `yaml:"name"`
+	Kustomization []string          `yaml:"kustomization_input"`
+	Manifests     string            `yaml:"kubernetes_manifest_output"`
+	Set           map[string]string `yaml:"set"`
+	Purge         bool              `yaml:"purge"`
 }
 
 // Uninstall deletes a provided set of Kustomize releases, supplying optional flags/params
@@ -43,27 +45,21 @@ func (m *Mixin) Uninstall() error {
 	}
 	step := action.Steps[0]
 
-	cmd := m.NewCommand("kustomize", "delete")
+	var commands []*exec.Cmd
 
-	if step.Purge {
-		cmd.Args = append(cmd.Args, "--purge")
-	}
+	ghToken := step.Set["kustomizeBaseGHToken"]
 
-	for _, release := range step.Releases {
-		cmd.Args = append(cmd.Args, release)
-	}
-
-	cmd.Stdout = m.Out
-	cmd.Stderr = m.Err
-
-	prettyCmd := fmt.Sprintf("%s %s", cmd.Path, strings.Join(cmd.Args, " "))
-	fmt.Fprintln(m.Out, prettyCmd)
-
-	err = cmd.Start()
+	err = m.configureGithubToken(ghToken)
 	if err != nil {
-		return fmt.Errorf("could not execute command, %s: %s", prettyCmd, err)
+		return err
 	}
-	err = cmd.Wait()
+
+	err = m.manifestHandling(step)
+	if err != nil {
+		return err
+	}
+
+	err = m.buildAndExecuteKustomizeCmds(step, commands)
 	if err != nil {
 		return err
 	}

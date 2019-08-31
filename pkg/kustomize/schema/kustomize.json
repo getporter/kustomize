@@ -13,26 +13,29 @@
             "name": {
               "type": "string"
             },
-            "namespace": {
+            "reorder": {
               "type": "string"
             },
-            "kustomization": {
-              "type": "string"
+            "kustomization_input": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minItems": 1
+              }
             },
-            "version": {
+            "kubernetes_manifest_output": {
               "type": "string"
-            },
-            "replace": {
-              "type": "boolean"
             },
             "wait": {
               "type": "boolean"
             },
-            "devel": {
-              "type": "boolean"
+            "autoDeploy": {
+              "type": "boolean",
+              "default": false
             },
             "set": {
               "type": "object",
+              "minItems": 1,
               "additionalProperties": true
             },
             "values": {
@@ -43,13 +46,20 @@
             },
             "outputs": {
               "$ref": "#/definitions/outputs"
+            },
+            "parameters": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
             }
           },
           "additionalProperties": false,
           "required": [
             "name",
             "description",
-            "kustomization"
+            "kustomization_input",
+            "kubernetes_manifest_output"
           ]
         }
       },
@@ -70,13 +80,14 @@
             "name": {
               "type": "string"
             },
-            "namespace": {
-              "type": "string"
+            "kustomization_input": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minItems": 1
+              }
             },
-            "kustomization": {
-              "type": "string"
-            },
-            "version": {
+            "kubernetes_manifest_output": {
               "type": "string"
             },
             "wait": {
@@ -85,21 +96,8 @@
             },
             "set": {
               "type": "object",
+              "minItems": 1,
               "additionalProperties": true
-            },
-            "values": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "resetValues": {
-              "type": "boolean",
-              "default": false
-            },
-            "reuseValues": {
-              "type": "boolean",
-              "default": false
             },
             "outputs": {
               "$ref": "#/definitions/outputs"
@@ -109,7 +107,8 @@
           "required": [
             "name",
             "description",
-            "kustomization"
+            "kustomization_input",
+            "kubernetes_manifest_output"
           ]
         }
       },
@@ -136,8 +135,7 @@
           },
           "additionalProperties": false,
           "required": [
-            "description",
-            "releases"
+            "description"
           ]
         }
       },
@@ -154,12 +152,23 @@
             "description": {
               "$ref": "#/definitions/stepDescription"
             },
-            "releases": {
+            "name": {
+              "type": "string"
+            },
+            "kustomization_input": {
               "type": "array",
               "items": {
-                "type": "string"
-              },
-              "minItems": 1
+                "type": "string",
+                "minItems": 1
+              }
+            },
+            "kubernetes_manifest_output": {
+              "type": "string"
+            },
+            "set": {
+              "type": "object",
+              "minItems": 1,
+              "additionalProperties": true
             },
             "purge": {
               "type": "boolean",
@@ -169,7 +178,8 @@
           "additionalProperties": false,
           "required": [
             "description",
-            "releases"
+            "kustomization_input",
+            "kubernetes_manifest_output"
           ]
         }
       },

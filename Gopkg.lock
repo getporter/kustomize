@@ -216,14 +216,6 @@
   revision = "c63ab54fda8f77302f8d414e19933f2b6026a089"
 
 [[projects]]
-  digest = "1:9a52adf44086cead3b384e5d0dbf7a1c1cce65e67552ee3383a8561c42a18cd3"
-  name = "github.com/imdario/mergo"
-  packages = ["."]
-  pruneopts = "NUT"
-  revision = "9f23e2d6bd2a77f959b2bf6acdbefd708a83a4a4"
-  version = "v0.3.6"
-
-[[projects]]
   digest = "1:406338ad39ab2e37b7f4452906442a3dbf0eb3379dd1f06aafb5c07e769a5fbb"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
@@ -625,7 +617,7 @@
   version = "kubernetes-1.12.2"
 
 [[projects]]
-  digest = "1:f909636c53e441e7dbbb10ba0b14e0129a69640dea71c1210adf25173e862790"
+  digest = "1:418dbf678e3a8a58b0696c452fdb47e5c1a133891167118dae6c14d9f802a56d"
   name = "k8s.io/client-go"
   packages = [
     "discovery",
@@ -703,18 +695,13 @@
     "rest",
     "rest/watch",
     "testing",
-    "tools/auth",
-    "tools/clientcmd",
     "tools/clientcmd/api",
-    "tools/clientcmd/api/latest",
-    "tools/clientcmd/api/v1",
     "tools/metrics",
     "tools/reference",
     "transport",
     "util/cert",
     "util/connrotation",
     "util/flowcontrol",
-    "util/homedir",
     "util/integer",
   ]
   pruneopts = "NUT"
@@ -749,7 +736,6 @@
     "k8s.io/apimachinery/pkg/apis/meta/v1",
     "k8s.io/client-go/kubernetes",
     "k8s.io/client-go/kubernetes/fake",
-    "k8s.io/client-go/tools/clientcmd",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

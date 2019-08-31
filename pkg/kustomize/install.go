@@ -2,10 +2,9 @@ package kustomize
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
+	"os/exec"
 )
 
 type InstallAction struct {
@@ -19,29 +18,18 @@ type InstallStep struct {
 type InstallArguments struct {
 	Step `yaml:",inline"`
 
-	Namespace     string `yaml:"namespace"`
-	Name          string `yaml:"name"`
-	Kustomization string `yaml:"kustomization"`
-	/*
-		Version   		string            `yaml:"version"`
-		Replace   		bool              `yaml:"replace"`
-		Set       		map[string]string `yaml:"set"`
-		Values    		[]string          `yaml:"values"`
-		Devel     		bool              `yaml:"devel`
-
-	*/
-	Wait bool `yaml:"wait"`
+	Name          string            `yaml:"name"`
+	Kustomization []string          `yaml:"kustomization_input"`
+	Manifests     string            `yaml:"kubernetes_manifest_output"`
+	Set           map[string]string `yaml:"set"`
+	AutoDeploy    bool              `yaml:"autoDeploy"`
+	Reorder       string            `yaml:"reorder"`
 }
 
 func (m *Mixin) Install() error {
 	payload, err := m.getPayloadData()
 	if err != nil {
 		return err
-	}
-
-	kubeClient, err := m.getKubernetesClient("/root/.kube/config")
-	if err != nil {
-		return errors.Wrap(err, "couldn't get kubernetes client")
 	}
 
 	var action InstallAction
@@ -52,72 +40,30 @@ func (m *Mixin) Install() error {
 	if len(action.Steps) != 1 {
 		return errors.Errorf("expected a single step, but got %d", len(action.Steps))
 	}
+
 	step := action.Steps[0]
 
-	//cmd := m.NewCommand("kustomize", "build", "--name", step.Name, step.Kustomization)
-	cmd := m.NewCommand("kustomize", "build", step.Kustomization)
+	var commands []*exec.Cmd
 
-	/*
-		if step.Namespace != "" {
-			cmd.Args = append(cmd.Args, "--namespace", step.Namespace)
-		}
+	ghToken := step.Set["kustomizeBaseGHToken"]
 
-		if step.Version != "" {
-			cmd.Args = append(cmd.Args, "--version", step.Version)
-		}
-
-		if step.Replace {
-			cmd.Args = append(cmd.Args, "--replace")
-		}
-
-		if step.Wait {
-			cmd.Args = append(cmd.Args, "--wait")
-		}
-
-		if step.Devel {
-			cmd.Args = append(cmd.Args, "--devel")
-		}
-
-		for _, v := range step.Values {
-			cmd.Args = append(cmd.Args, "--values", v)
-		}
-
-		// sort the set consistently
-		setKeys := make([]string, 0, len(step.Set))
-		for k := range step.Set {
-			setKeys = append(setKeys, k)
-		}
-		sort.Strings(setKeys)
-
-		for _, k := range setKeys {
-			cmd.Args = append(cmd.Args, "--set", fmt.Sprintf("%s=%s", k, step.Set[k]))
-		}
-
-
-	*/
-
-	cmd.Stdout = m.Out
-	cmd.Stderr = m.Err
-
-	prettyCmd := fmt.Sprintf("%s %s", cmd.Path, strings.Join(cmd.Args, " "))
-	fmt.Fprintln(m.Out, prettyCmd)
-
-	err = cmd.Start()
+	err = m.configureGithubToken(ghToken)
 	if err != nil {
-		return fmt.Errorf("could not execute command, %s: %s", prettyCmd, err)
+		return err
 	}
-	err = cmd.Wait()
+
+	err = m.manifestHandling(step)
+	if err != nil {
+		return err
+	}
+
+	err = m.buildAndExecuteKustomizeCmds(step, commands)
 	if err != nil {
 		return err
 	}
 
 	for _, output := range step.Outputs {
-		val, err := getSecret(kubeClient, step.Namespace, output.Secret, output.Key)
-		if err != nil {
-			return err
-		}
-
-		err = m.Context.WriteMixinOutputToFile(output.Name, val)
+		err = m.Context.WriteMixinOutputToFile(output.Name, []byte(fmt.Sprintf("%v", output)))
 		if err != nil {
 			return errors.Wrapf(err, "unable to write output '%s'", output.Name)
 		}

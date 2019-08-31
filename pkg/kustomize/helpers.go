@@ -25,7 +25,6 @@ func NewTestMixin(t *testing.T) *TestMixin {
 	c := context.NewTestContext(t)
 	m := New()
 	m.Context = c.Context
-	m.ClientFactory = &testKubernetesFactory{}
 	return &TestMixin{
 		Mixin:       m,
 		TestContext: c,

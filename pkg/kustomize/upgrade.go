@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 type UpgradeAction struct {
@@ -38,11 +38,6 @@ func (m *Mixin) Upgrade() error {
 	payload, err := m.getPayloadData()
 	if err != nil {
 		return err
-	}
-
-	kubeClient, err := m.getKubernetesClient("/root/.kube/config")
-	if err != nil {
-		return errors.Wrap(err, "couldn't get kubernetes client")
 	}
 
 	var action UpgradeAction
@@ -96,7 +91,10 @@ func (m *Mixin) Upgrade() error {
 	cmd.Stderr = m.Err
 
 	prettyCmd := fmt.Sprintf("%s %s", cmd.Path, strings.Join(cmd.Args, " "))
-	fmt.Fprintln(m.Out, prettyCmd)
+	_, err = fmt.Fprintln(m.Out, prettyCmd)
+	if err != nil {
+		return err
+	}
 
 	err = cmd.Start()
 	if err != nil {
@@ -107,16 +105,15 @@ func (m *Mixin) Upgrade() error {
 		return err
 	}
 
-	for _, output := range step.Outputs {
-		val, err := getSecret(kubeClient, step.Namespace, output.Secret, output.Key)
-		if err != nil {
-			return err
+	/*
+		for _, output := range step.Outputs {
+
+					//err = m.Context.WriteMixinOutputToFile(output.Name, val)
+			if err != nil {
+				return errors.Wrapf(err, "unable to write output '%s'", output.Name)
+			}
 		}
 
-		err = m.Context.WriteMixinOutputToFile(output.Name, val)
-		if err != nil {
-			return errors.Wrapf(err, "unable to write output '%s'", output.Name)
-		}
-	}
+	*/
 	return nil
 }

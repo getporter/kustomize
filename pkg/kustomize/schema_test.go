@@ -29,7 +29,7 @@ func TestMixin_ValidatePayload(t *testing.T) {
 		pass  bool
 		error string
 	}{
-		{"install", "testdata/install-input.yaml", true, ""},
+		{"install", "testdata/install-robotshop-input.yaml", true, ""},
 		{"status", "testdata/status-input.yaml", true, ""},
 		{"upgrade", "testdata/upgrade-input.yaml", true, ""},
 		{"uninstall", "testdata/status-input.yaml", true, ""},

@@ -10,7 +10,7 @@ import (
 	"github.com/deislabs/porter/pkg/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 type UninstallTest struct {
@@ -29,23 +29,17 @@ func TestMixin_UnmarshalUninstallStep(t *testing.T) {
 	step := action.Steps[0]
 
 	assert.Equal(t, "Uninstall MySQL", step.Description)
-	assert.Equal(t, []string{"porter-ci-mysql"}, step.Releases)
 	assert.True(t, step.Purge)
 }
 
 func TestMixin_Uninstall(t *testing.T) {
-	releases := []string{
-		"foo",
-		"bar",
-	}
 
 	uninstallTests := []UninstallTest{
 		{
 			expectedCommand: `kustomize delete foo bar`,
 			uninstallStep: UninstallStep{
 				UninstallArguments: UninstallArguments{
-					Step:     Step{Description: "Uninstall Foo"},
-					Releases: releases,
+					Step: Step{Description: "Uninstall Foo"},
 				},
 			},
 		},
@@ -53,9 +47,8 @@ func TestMixin_Uninstall(t *testing.T) {
 			expectedCommand: `kustomize delete --purge foo bar`,
 			uninstallStep: UninstallStep{
 				UninstallArguments: UninstallArguments{
-					Step:     Step{Description: "Uninstall Foo"},
-					Purge:    true,
-					Releases: releases,
+					Step:  Step{Description: "Uninstall Foo"},
+					Purge: true,
 				},
 			},
 		},
@@ -64,7 +57,10 @@ func TestMixin_Uninstall(t *testing.T) {
 	defer os.Unsetenv(test.ExpectedCommandEnv)
 	for _, uninstallTest := range uninstallTests {
 		t.Run(uninstallTest.expectedCommand, func(t *testing.T) {
-			os.Setenv(test.ExpectedCommandEnv, uninstallTest.expectedCommand)
+			err := os.Setenv(test.ExpectedCommandEnv, uninstallTest.expectedCommand)
+			if err != nil {
+				os.Exit(-1)
+			}
 
 			action := UninstallAction{Steps: []UninstallStep{uninstallTest.uninstallStep}}
 			b, _ := yaml.Marshal(action)
@@ -74,7 +70,7 @@ func TestMixin_Uninstall(t *testing.T) {
 			h := NewTestMixin(t)
 			h.In = bytes.NewReader(b)
 
-			err := h.Uninstall()
+			err = h.Uninstall()
 
 			require.NoError(t, err)
 		})

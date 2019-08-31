@@ -10,7 +10,7 @@ import (
 	"github.com/deislabs/porter/pkg/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 type UpgradeTest struct {
@@ -43,80 +43,19 @@ func TestMixin_UnmarshalUpgradeStep(t *testing.T) {
 }
 
 func TestMixin_Upgrade(t *testing.T) {
-	namespace := "MYNAMESPACE"
 	name := "MYRELEASE"
 	kustomization := "MYKUSTOMIZATION"
-	version := "1.0.0"
-	setArgs := map[string]string{
-		"foo": "bar",
-		"baz": "qux",
-	}
-	values := []string{
-		"/tmp/val1.yaml",
-		"/tmp/val2.yaml",
-	}
 
-	baseUpgrade := fmt.Sprintf(`kustomize upgrade %s %s --namespace %s --version %s`, name, kustomization, namespace, version)
-	baseValues := `--values /tmp/val1.yaml --values /tmp/val2.yaml`
-	baseSetArgs := `--set baz=qux --set foo=bar`
+	baseUpgrade := fmt.Sprintf(`kustomize upgrade %s %s`, name, kustomization)
 
 	upgradeTests := []UpgradeTest{
 		{
-			expectedCommand: fmt.Sprintf(`%s %s %s`, baseUpgrade, baseValues, baseSetArgs),
+			expectedCommand: fmt.Sprintf(`%s`, baseUpgrade),
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
 					Step:          Step{Description: "Upgrade Foo"},
-					Namespace:     namespace,
 					Name:          name,
 					Kustomization: kustomization,
-					Version:       version,
-					Set:           setArgs,
-					Values:        values,
-				},
-			},
-		},
-		{
-			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reset-values`, baseValues, baseSetArgs),
-			upgradeStep: UpgradeStep{
-				UpgradeArguments: UpgradeArguments{
-					Step:          Step{Description: "Upgrade Foo"},
-					Namespace:     namespace,
-					Name:          name,
-					Kustomization: kustomization,
-					Version:       version,
-					Set:           setArgs,
-					Values:        values,
-					ResetValues:   true,
-				},
-			},
-		},
-		{
-			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--reuse-values`, baseValues, baseSetArgs),
-			upgradeStep: UpgradeStep{
-				UpgradeArguments: UpgradeArguments{
-					Step:          Step{Description: "Upgrade Foo"},
-					Namespace:     namespace,
-					Name:          name,
-					Kustomization: kustomization,
-					Version:       version,
-					Set:           setArgs,
-					Values:        values,
-					ReuseValues:   true,
-				},
-			},
-		},
-		{
-			expectedCommand: fmt.Sprintf(`%s %s %s %s`, baseUpgrade, `--wait`, baseValues, baseSetArgs),
-			upgradeStep: UpgradeStep{
-				UpgradeArguments: UpgradeArguments{
-					Step:          Step{Description: "Upgrade Foo"},
-					Namespace:     namespace,
-					Name:          name,
-					Kustomization: kustomization,
-					Version:       version,
-					Set:           setArgs,
-					Values:        values,
-					Wait:          true,
 				},
 			},
 		},
@@ -126,7 +65,10 @@ func TestMixin_Upgrade(t *testing.T) {
 	for _, upgradeTest := range upgradeTests {
 		t.Run(upgradeTest.expectedCommand, func(t *testing.T) {
 
-			os.Setenv(test.ExpectedCommandEnv, upgradeTest.expectedCommand)
+			err := os.Setenv(test.ExpectedCommandEnv, upgradeTest.expectedCommand)
+			if err != nil {
+				os.Exit(-1)
+			}
 
 			action := UpgradeAction{Steps: []UpgradeStep{upgradeTest.upgradeStep}}
 			b, err := yaml.Marshal(action)

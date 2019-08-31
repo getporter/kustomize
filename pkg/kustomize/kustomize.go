@@ -7,28 +7,24 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/dockerps/porter-kustomize/pkg/kubernetes"
 	"github.com/deislabs/porter/pkg/context"
 	"github.com/ghodss/yaml" // We are not using go-yaml because of serialization problems with jsonschema, don't use this library elsewhere
 	"github.com/gobuffalo/packr/v2"
 	"github.com/pkg/errors"
 	"github.com/xeipuuv/gojsonschema"
-	k8s "k8s.io/client-go/kubernetes"
 )
 
 // Kusomtize is the logic behind the kustomize mixin
 type Mixin struct {
 	*context.Context
-	schema        *packr.Box
-	ClientFactory kubernetes.ClientFactory
+	schema *packr.Box
 }
 
 // New kustomize mixin client, initialized with useful defaults.
 func New() *Mixin {
 	return &Mixin{
-		schema:        packr.New("schema", "./schema"),
-		Context:       context.New(),
-		ClientFactory: kubernetes.New(),
+		schema:  packr.New("schema", "./schema"),
+		Context: context.New(),
 	}
 }
 
@@ -80,8 +76,4 @@ func (m *Mixin) ValidatePayload(b []byte) error {
 	}
 
 	return nil
-}
-
-func (m *Mixin) getKubernetesClient(kubeconfig string) (k8s.Interface, error) {
-	return m.ClientFactory.GetClient(kubeconfig)
 }

@@ -1,7 +1,7 @@
 package kustomize
 
 type Step struct {
-	Description string       `yaml:"description"`
+	Description string            `yaml:"description"`
 	Outputs     []KustomizeOutput `yaml:"outputs,omitempty"`
 }
 

@@ -13,22 +13,23 @@
             "name": {
               "type": "string"
             },
-            "namespace": {
+            "reorder": {
               "type": "string"
             },
-            "kustomization": {
-              "type": "string"
+            "kustomization_input": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minItems": 1
+              }
             },
-            "version": {
+            "kubernetes_manifest_output": {
               "type": "string"
             },
             "replace": {
               "type": "boolean"
             },
             "wait": {
-              "type": "boolean"
-            },
-            "devel": {
               "type": "boolean"
             },
             "set": {
@@ -49,12 +50,14 @@
           "required": [
             "name",
             "description",
-            "kustomization"
+            "kustomization_input",
+            "kubernetes_manifest_output"
           ]
         }
       },
       "required": [
-        "kustomize"
+        "kustomization_input",
+        "kubernetes_manifest_output"
       ],
       "additionalProperties": false
     },
@@ -70,10 +73,17 @@
             "name": {
               "type": "string"
             },
-            "namespace": {
+            "reorder": {
               "type": "string"
             },
-            "kustomization": {
+            "kustomization_input": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minItems": 1
+              }
+            },
+            "kubernetes_manifest_output": {
               "type": "string"
             },
             "version": {
