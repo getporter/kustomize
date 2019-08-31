@@ -3,7 +3,7 @@ package kustomize
 import (
 	"fmt"
 
-	"github.com/dockerps/porter-kustomize/pkg"
+	"github.com/donmstewart/porter-kustomize/pkg"
 )
 
 func (m *Mixin) PrintVersion() {

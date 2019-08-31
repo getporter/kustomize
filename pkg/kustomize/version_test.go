@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/dockerps/porter-kustomize/pkg"
+	"github.com/donmstewart/porter-kustomize/pkg"
 )
 
 func TestPrintVersion(t *testing.T) {

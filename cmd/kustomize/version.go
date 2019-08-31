@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/dockerps/porter-kustomize/pkg/kustomize"
+	"github.com/donmstewart/porter-kustomize/pkg/kustomize"
 	"github.com/spf13/cobra"
 )
 

@@ -1,5 +1,5 @@
 MIXIN = kustomize
-PKG = github.com/dockerps/porter-$(MIXIN)
+PKG = github.com/donmstewart/porter-$(MIXIN)
 SHELL = bash
 
 PORTER_HOME ?= $(HOME)/.porter
