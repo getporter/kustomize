@@ -236,3 +236,12 @@ manifest `yaml` files.
 
 #### `install:` - `kubernetes`
 
+This is the configuration for the `kubernetes` mixin for porter. Here we define what we want `kubectl` to apply to 
+the specified kubernetes cluster by pointing to a directory within the `innovcationImage` where it can find the 
+necessary kubernetes `yaml` manifests.
+
+This is not part of the `porter-kustomize` mixin but is present in order to be able to perform the 
+deployments/upgrades/undeployments defined in the output from kustomize.
+
+This plugin documentation can be found [here](https://porter.sh/mixins/kubernetes/) and the GitHub repository
+is [here](https://github.com/deislabs/porter/tree/master/pkg/kubernetes).
