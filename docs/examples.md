@@ -157,7 +157,7 @@ uninstall:
     * remote git repository
     
     times to generate the kubernetes manifest can vary by a considerable amount i.e. with many micro-services all
-    pulling base configuration from say GiutHub this introduces quite an overhead timewise. 
+    pulling base configuration from say GitHub this introduces quite an overhead timewise. 
 
 #### CNAB Bundle Manifest
 
