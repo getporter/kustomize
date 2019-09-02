@@ -156,9 +156,33 @@ uninstall:
     * local disk
     * remote git repository
     
-    times to generate the kubernetes manifest can vary by a considerable amount i.e. with mnay micro-services all
+    times to generate the kubernetes manifest can vary by a considerable amount i.e. with many micro-services all
     pulling base configuration from say GiutHub this introduces quite an overhead timewise. 
-    
+
+#### CNAB Bundle Manifest
+
+The beginning of the `porter.yaml` defines information for the generated CNAB bundle. 
+This is lines 6-10 in the `porter.yaml` file.
+
+#### `mixins:`
+
+This is where we define the `mixins` to be used as part of the `install` and `uninstall` steps in porter. 
+The *`mixin-runtime`* binaries will be copied into the docker `innvocationImage` in order porter can execute the
+necessary steps.
+
+This example defines usage of: -
+
+* exec (not actually used)
+* kustomize
+* kubernetes
+
+#### `credentials`:
+
+The credentials definition on lines 21-23 is necessary in order that the `kubernetes` mixin can `apply` or `delete` the
+specified manifests from the given cluster.
+
+Creation of the credentials is done using the `porter credentials generate` command from the cli.
+
 #### `parameters:`
 
 For this advanced exmaple we have defined two parameters that we need to pass to `porter` as part of the innvocation.
@@ -212,3 +236,12 @@ manifest `yaml` files.
 
 #### `install:` - `kubernetes`
 
+This is the configuration for the `kubernetes` mixin for porter. Here we define what we want `kubectl` to apply to 
+the specified kubernetes cluster by pointing to a directory within the `innovcationImage` where it can find the 
+necessary kubernetes `yaml` manifests.
+
+This is not part of the `porter-kustomize` mixin but is present in order to be able to perform the 
+deployments/upgrades/undeployments defined in the output from kustomize.
+
+This plugin documentation can be found [here](https://porter.sh/mixins/kubernetes/) and the GitHub repository
+is [here](https://github.com/deislabs/porter/tree/master/pkg/kubernetes).
