@@ -1,26 +1,4 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Go template
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-
-# Test binary, built with `go test -c`
-*.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-
-# VS Code
-.vscode
-
-# IntelliJ/Goland
-.idea/
-
-# Make output directory
+.vscode/
 bin/
-
-# Dependency directories (remove the comment below to include it)
-
+vendor/
+Gopkg.lock

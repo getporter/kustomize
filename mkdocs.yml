@@ -1,0 +1,71 @@
+site_name: Porter-Kustomize
+#site_url: https://github.com/pages/docker/cs-mvp-stacks/
+repo_url:  https://github.com/donmstewart/porter-kustomize.git
+site_author: Don Stewart
+site_dir: _site
+repo_name: 'GitHub'
+
+nav:
+  - Home: index.md
+  - Building the Mixin: development.md
+  - Usage: examples.md
+  - About: about.md
+
+theme:
+  name: material
+  favicon: 'images/logos/favicon.png'
+  highlightjs: true
+  language: 'en'
+  feature:
+    tabs: false
+  palette:
+    primary: 'light blue'
+    accent: 'light blue'
+  logo: 'https://porter.sh/images/porter-logo.png'
+  hljs_languages:
+    - yaml
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+
+
+markdown_extensions:
+  #    - toc:
+  #        permalink: 
+  - markdown.extensions.toc:
+      permalink: true
+  - admonition
+  - codehilite:
+      linenums: true
+      guess_lang: false
+  - footnotes
+  - meta
+  - def_list
+  - attr_list
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - pymdownx.tilde
+
+plugins:
+  - search
+  - macros
+  - pdf-export:
+      verbose: true
+      media_type: print
+      combined: true
+      enabled_if_env: ENABLE_PDF_EXPORT
+
+extra_css:
+  - css/pdf_output.css
