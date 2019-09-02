@@ -13,7 +13,7 @@ nav:
 
 theme:
   name: material
-  favicon: 'images/logos/favicon.png'
+  favicon: 'https://porter.sh/src/img/favicon.png'
   highlightjs: true
   language: 'en'
   feature:
@@ -21,7 +21,7 @@ theme:
   palette:
     primary: 'light blue'
     accent: 'light blue'
-  logo: 'https://porter.sh/images/porter-logo.png'
+  logo: 'https://porter.sh/src/img/favicon.png'
   hljs_languages:
     - yaml
   font:
