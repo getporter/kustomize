@@ -26,6 +26,9 @@ jobs:
         mkdir -p $GOBIN
         curl https://cdn.deislabs.io/porter/latest/install-linux.sh | bash
         export PATH=$PATH:~/.porter
+        mkdir -p $GOPATH/src/github.com/$GITHUB_REPOSITORY
+        mv $(pwd)/* $GOPATH/src/github.com/$GITHUB_REPOSITORY
+        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY
         go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
