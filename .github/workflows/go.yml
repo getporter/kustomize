@@ -18,8 +18,14 @@ jobs:
       
     - name: Get dependencies
       run: |
-        export PATH=$PATH:$(go env GOPATH)/bin
+        export GOPATH=$HOME/go
+        export GOBIN=$(go env GOPATH)/bin
+        export PATH=$PATH:$GOPATH
+        export PATH=$PATH:$GOBIN
+        mkdir -p $GOPATH/pkg
+        mkdir -p $GOBIN
         curl https://cdn.deislabs.io/porter/latest/install-linux.sh | bash
+        export PATH=$PATH:~/.porter
         go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
