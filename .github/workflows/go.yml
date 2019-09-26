@@ -25,6 +25,7 @@ jobs:
         fi
 
     - name: Build
-      uses: actions/action-builder/docker@master
-      run: make xbuild-all xbuild build install
+      uses: cedrickring/golang-action@1.3.0
+      with:
+        args: make xbuild-all xbuild build install
 
