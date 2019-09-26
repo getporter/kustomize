@@ -26,5 +26,5 @@ jobs:
 
     - name: Build
       uses: actions/action-builder/docker@master
-      run: = make xbuild-all xbuild build install
+      run: make xbuild-all xbuild build install
 
