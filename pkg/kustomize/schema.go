@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+// Outputs the JSON Schema for this `kustomize` mixin's configuration found within a Porter.sh
+//   `porter.yaml` configuration file.
 func (m *Mixin) PrintSchema() error {
 	schema, err := m.GetSchema()
 	if err != nil {
@@ -15,6 +17,8 @@ func (m *Mixin) PrintSchema() error {
 	return nil
 }
 
+// Returns the JSON Schema for this `kustomize` mixin's configuration, found within a Porter.sh
+//   `porter.yaml` configuration file, as a `string`
 func (m *Mixin) GetSchema() (string, error) {
 	b, err := m.schema.Find("kustomize.json")
 	if err != nil {

@@ -7,14 +7,37 @@ import (
 	"os/exec"
 )
 
+// The `Porter.sh` action for Install
 type InstallAction struct {
 	Steps []InstallStep `yaml:"install"`
 }
 
+// The `Porter.sh` step for Install for Kustomize
 type InstallStep struct {
 	InstallArguments `yaml:"kustomize"`
 }
 
+// The base level Structure that captures the high level data types
+//   needed by Kustomize.
+//
+//   `Kustomization` field in the Go struct and `kustomization_input` field in the `porter.yaml`
+//   is the location against which to run the `kustomize build` command. This will
+//   be an overlay directory.
+//
+//   `Manifests` field in the Go struct and `kubernetes_manifest_output` field in the `porter.yaml`
+//   is the location into which `kustomize` will output the generated kubernetes resource yaml files.
+//
+//   `Reorder` is a boolean flag in the Go struct and `autoDeploy` field in the `porter.yaml` which
+//    enables `kustomize` to reorder the resources within the yaml file that is to be output.
+//
+//    `Reorder` from the `kustomize` documentation -
+//
+//    --reorder {none | legacy } flag to the build command.
+//    The default value is legacy which means no change - continue to output resources in the legacy order
+//    (Namespaces first, ValidatingWebhookConfiguration last, etc. - see gvk.go)
+//    A value of none suppresses the sort
+//
+//   `Set`, `AutoDeploy` are not currently implemented.
 type InstallArguments struct {
 	Step `yaml:",inline"`
 
@@ -26,6 +49,7 @@ type InstallArguments struct {
 	Reorder       string            `yaml:"reorder"`
 }
 
+// The public method invoked by `porter` when performing an `Install` step that has a `kustomize` mixin step
 func (m *Mixin) Install() error {
 	payload, err := m.getPayloadData()
 	if err != nil {
