@@ -1,0 +1,30 @@
+name: Release
+
+on: 
+  release:
+    branches:
+    - master
+    - feature/github_actions
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Project
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+        path: go/src/github.com/donmstewart/porter-kustomize
+    -name: Tag
+      uses: Roang-zero1/github-create-release-action@master
+      env:
+        VERSION_REGEX: "^v[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+",
+        PRERELEASE_REGEX: "^v0\\.[[:digit:]]+\\.[[:digit:]]+",
+    -name: Upload
+      uses: skx/github-action-publish-binaries@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: 'porter-kustomize-*'
