@@ -24,6 +24,8 @@ jobs:
       env:
         VERSION_REGEX: "^v[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+",
         PRERELEASE_REGEX: "^v0\\.[[:digit:]]+\\.[[:digit:]]+-beta",
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      needs: ["filter tag"]
         
     - name: Upload
       uses: skx/github-action-publish-binaries@master
