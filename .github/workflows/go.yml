@@ -35,6 +35,8 @@ jobs:
         GOPATH: /home/runner/work/porter-kustomize/go
 
     - name: Build
-      run: make xbuild-all xbuild build install
+      run: |
+        export PATH=$PATH:$GOPATH/bin:~/.porter
+        make xbuild-all xbuild build install
       env:
         GOPATH: /home/runner/work/porter-kustomize/go
