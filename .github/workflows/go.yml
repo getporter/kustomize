@@ -15,7 +15,9 @@ jobs:
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
-      path: go/src/github.com/donmstewart/porter-kustomize
+      with:
+        fetch-depth: 1
+        path: go/src/github.com/donmstewart/porter-kustomize
       
     - name: Get Dependencies
       run: |
