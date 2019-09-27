@@ -4,7 +4,6 @@ on:
   release:
     branches:
     - master
-    - feature/github_actions
 
 jobs:
   build:
@@ -19,13 +18,10 @@ jobs:
         fetch-depth: 1
         path: go/src/github.com/donmstewart/porter-kustomize
         
-    - name: Tag
-      uses: Roang-zero1/github-create-release-action@master
+    - name: GitHub Create Tag Release
+      uses: Roang-zero1/github-create-release-action@v1.0.2
       env:
-        VERSION_REGEX: "^v[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+",
-        PRERELEASE_REGEX: "^v0\\.[[:digit:]]+\\.[[:digit:]]+-beta",
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      needs: ["filter tag"]
         
     - name: Upload
       uses: skx/github-action-publish-binaries@master
