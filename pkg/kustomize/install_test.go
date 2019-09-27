@@ -54,7 +54,7 @@ func TestMixin_Install(t *testing.T) {
 
 	installTests := []InstallTest{
 		{
-			expectedCommand: fmt.Sprintf(`%s`, baseInstall),
+			expectedCommand: baseInstall,
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
 					Step:          Step{Description: "Install Robotshop"},

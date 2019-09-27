@@ -18,10 +18,8 @@ func (m *Mixin) manifestHandling(step interface{}) error {
 	switch s := step.(type) {
 	case InstallStep:
 		manifests = s.Manifests
-		break
 	case UninstallStep:
 		manifests = s.Manifests
-		break
 	default:
 		return errors.New("Unsupported Step type " + reflect.TypeOf(step).String())
 	}
@@ -55,11 +53,9 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 	case InstallStep:
 		kustomization = s.Kustomization
 		manifests = s.Manifests
-		break
 	case UninstallStep:
 		kustomization = s.Kustomization
 		manifests = s.Manifests
-		break
 	default:
 		return errors.New("Unsupported Step type")
 	}
@@ -115,9 +111,15 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 func (m *Mixin) configureGithubToken(ghToken string) error {
 	if ghToken != "" {
 		var gitArgs = strings.Builder{}
-		gitArgs.WriteString("url.https://")
-		gitArgs.WriteString(ghToken)
-		gitArgs.WriteString(":@github.com/.insteadOf")
+		if _, err := gitArgs.WriteString("url.https://"); err != nil {
+			return err
+		}
+		if _, err := gitArgs.WriteString(ghToken); err != nil {
+			return err
+		}
+		if _, err := gitArgs.WriteString(":@github.com/.insteadOf"); err != nil {
+			return err
+		}
 
 		gitCmd := m.NewCommand("git", "config", "--global", gitArgs.String(), "https://github.com/")
 		if m.Debug {

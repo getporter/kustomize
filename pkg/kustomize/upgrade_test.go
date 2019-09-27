@@ -50,7 +50,7 @@ func TestMixin_Upgrade(t *testing.T) {
 
 	upgradeTests := []UpgradeTest{
 		{
-			expectedCommand: fmt.Sprintf(`%s`, baseUpgrade),
+			expectedCommand: baseUpgrade,
 			upgradeStep: UpgradeStep{
 				UpgradeArguments: UpgradeArguments{
 					Step:          Step{Description: "Upgrade Foo"},

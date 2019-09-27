@@ -4,6 +4,7 @@
 ![GitHub Downloads](https://img.shields.io/github/downloads/donmstewart/porter-kustomize/total)
 ![GitHub Latest Release](https://img.shields.io/github/v/release/donmstewart/porter-kustomize?include_prereleases)
 ![GitHub Contributors](https://img.shields.io/github/contributors/donmstewart/porter-kustomize)
+[![DeepSource](https://static.deepsource.io/deepsource-badge-light.svg)](https://deepsource.io/gh/donmstewart/porter-kustomize/?ref=repository-badge)
 
 # Kustomize Mixin for Porter
 
