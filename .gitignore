@@ -1,5 +1,7 @@
-.vscode/
-.idea/
-Gopkg.lock
+.vscode
+.idea
+.github
 _site
-/vendor/
+vendor
+bin
+Gopkg.lock
