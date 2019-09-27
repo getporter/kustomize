@@ -19,13 +19,13 @@ jobs:
         fetch-depth: 1
         path: go/src/github.com/donmstewart/porter-kustomize
         
-    -name: Tag
+    - name: Tag
       uses: Roang-zero1/github-create-release-action@master
       env:
         VERSION_REGEX: "^v[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+",
         PRERELEASE_REGEX: "^v0\\.[[:digit:]]+\\.[[:digit:]]+-beta",
         
-    -name: Upload
+    - name: Upload
       uses: skx/github-action-publish-binaries@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
