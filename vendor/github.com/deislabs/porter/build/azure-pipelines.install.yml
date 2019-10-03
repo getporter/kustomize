@@ -1,0 +1,12 @@
+pr: none
+trigger:
+  branches:
+    include:
+      - refs/heads/master
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+steps:
+- bash: scripts/test/test-install.sh
+  displayName: 'Test Linux Install Script'

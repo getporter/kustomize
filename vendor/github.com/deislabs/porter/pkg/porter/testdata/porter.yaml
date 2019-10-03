@@ -1,0 +1,69 @@
+name: HELLO_CUSTOM
+version: 0.1.0
+description: "A bundle with a custom action"
+invocationImage: porter-hello-custom:latest
+tag: deislabs/porter-hello-custom-bundle:latest
+
+credentials:
+  - name: my-first-cred
+    env: MY_FIRST_CRED
+  - name: my-second-cred
+    description: "My second cred"
+    path: /path/to/my-second-cred
+
+parameters:
+  - name: my-first-param
+    type: integer
+    default: 9
+    env: MY_FIRST_PARAM
+    applyTo:
+      - "install"
+  - name: my-second-param
+    description: "My second parameter"
+    type: string
+    default: spring-music-demo
+    path: /path/to/my-second-param
+    sensitive: true
+
+outputs:
+  - name: my-first-output
+    type: string
+    applyTo:
+      - "install"
+      - "upgrade"
+    sensitive: true
+  - name: my-second-output
+    description: "My second output"
+    type: boolean
+    sensitive: false
+
+mixins:
+  - exec
+
+install:
+  - exec:
+      description: "Install Hello World"
+      command: bash
+      flags:
+        c: echo Hello World
+
+upgrade:
+  - exec:
+      description: "World 2.0"
+      command: bash
+      flags:
+        c: echo World 2.0
+
+zombies:
+  - exec:
+      description: "Trigger zombie apocalypse"
+      command: bash
+      flags:
+        c: echo oh noes my brains
+
+uninstall:
+  - exec:
+      description: "Uninstall Hello World"
+      command: bash
+      flags:
+        c: echo Goodbye World
