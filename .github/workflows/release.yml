@@ -36,7 +36,6 @@ jobs:
         name: Run GoReleaser
         uses: goreleaser/goreleaser-action@master
         env:
-          PATH: $PATH:$GOPATH/bin
           GOPATH: /home/runner/work/porter-kustomize/go
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
      
