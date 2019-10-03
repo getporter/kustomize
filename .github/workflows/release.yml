@@ -17,6 +17,10 @@ jobs:
         name: Set up Go
         uses: actions/setup-go@master
       -
+         name: Deps
+         run: |
+           go get -u github.com/golang/dep/cmd/dep
+      -
         name: Run GoReleaser
         uses: goreleaser/goreleaser-action@master
         env:
