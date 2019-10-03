@@ -29,6 +29,7 @@ jobs:
             tar zxvf packr_2.7.0_linux_amd64.tar.gz
             echo $PATH
             cp packr2 /home/runner/work/porter-kustomize/go/bin/
+            chmod +x /home/runner/work/porter-kustomize/go/bin/packr2
             go get -u github.com/gobuffalo/packr/packr
             go get -v -t -d ./...
             if [ -f Gopkg.toml ]; then
