@@ -7,81 +7,18 @@ on:
     - develop
 
 jobs:
-  build:
-    name: Build
+  goreleaser:
     runs-on: ubuntu-latest
     steps:
-
-    - name: Set up Go 1.12
-      uses: actions/setup-go@v1
-      with:
-        go-version: 1.12
-      id: go
-
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-        path: go/src/github.com/donmstewart/porter-kustomize
-
-    - name: Get Dependencies
-      run: |
-        mkdir -p $GOPATH/bin
-        export PATH=$PATH:$GOPATH/bin
-        curl https://cdn.deislabs.io/porter/latest/install-linux.sh | bash
-        export PATH=$PATH:~/.porter
-        go get -v -t -d ./...
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
-        make xbuild-all xbuild build install
-      env:
-        GOPATH: /home/runner/work/porter-kustomize/go
-
-    - name: Build
-      run: |
-        export PATH=$PATH:$GOPATH/bin:~/.porter
-        make xbuild-all xbuild build install
-      env:
-        GOPATH: /home/runner/work/porter-kustomize/go
-          
-    - name: Save Binaries
-      uses: actions/upload-artifact@v1
-      with:
-        name: kustomize-binaries
-        path: /home/runner/work/porter-kustomize/go/bin
-    
-    - run: |
-        pwd
-        ls -la .
-        ls -la /home/runner/work/porter-kustomize/go/bin    
-        
-  tag:
-    name: Tag Release
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Tag Release
-        uses: Roang-zero1/github-create-release-action@v1.0.2
+      -
+        name: Checkout
+        uses: actions/checkout@master
+      -
+        name: Set up Go
+        uses: actions/setup-go@master
+      -
+        name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-  upload:  
-    runs-on: ubuntu-latest
-    needs: [build, tag]
-    steps:    
-    - name: Get Binaries
-      uses: actions/download-artifact@v1
-      with:
-        name: kustomize-binaries  
-    - run: | 
-        ls -la .
-        /home/runner/work/porter-kustomize/go/bin
-    - name: Upload
-      uses: skx/github-action-publish-binaries@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GOPATH: /home/runner/work/porter-kustomize/go
-      with:
-        args: 'porter-kustomize-*'    
+     
