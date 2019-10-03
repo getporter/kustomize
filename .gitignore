@@ -2,6 +2,5 @@
 .idea
 .github
 _site
-vendor
 bin
 Gopkg.lock
