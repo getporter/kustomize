@@ -27,7 +27,7 @@ jobs:
             export PATH=$PATH:$GOPATH/bin
             curl -L https://github.com/gobuffalo/packr/releases/download/v2.7.0/packr_2.7.0_linux_amd64.tar.gz -o packr_2.7.0_linux_amd64.tar.gz
             tar zxvf packr_2.7.0_linux_amd64.tar.gz
-            cp packr2 /usr/local/bin
+            ehco $PATH
             go get -v -t -d ./...
             go get -u github.com/gobuffalo/packr/packr
             if [ -f Gopkg.toml ]; then
