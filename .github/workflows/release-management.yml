@@ -5,7 +5,7 @@ on:
     # branches to consider in the event; optional, defaults to all
     branches:
       - master
-      - feature/github_actions
+      - develop
 
 jobs:
   update_draft_release:
