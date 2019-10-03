@@ -63,5 +63,6 @@ jobs:
       uses: skx/github-action-publish-binaries@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GOPATH: /home/runner/work/porter-kustomize/go
       with:
-        args: 'porter-kustomize-*'
+        args: 'porter-kustomize-*'    
