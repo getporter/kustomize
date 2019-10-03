@@ -28,8 +28,9 @@ jobs:
             curl -L https://github.com/gobuffalo/packr/releases/download/v2.7.0/packr_2.7.0_linux_amd64.tar.gz -o packr_2.7.0_linux_amd64.tar.gz
             tar zxvf packr_2.7.0_linux_amd64.tar.gz
             echo $PATH
-            go get -v -t -d ./...
+            cp packr2 /home/runner/work/porter-kustomize/go/bin/
             go get -u github.com/gobuffalo/packr/packr
+            go get -v -t -d ./...
             if [ -f Gopkg.toml ]; then
               curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
               dep ensure
