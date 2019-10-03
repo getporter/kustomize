@@ -50,12 +50,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: kustomize-binaries
-        path: /home/runner/work/porter-kustomize/go/bin
-    
-    - run: |
-        pwd
-        ls -la .
-        ls -la /home/runner/work/porter-kustomize/go/bin    
+        path: /home/runner/work/porter-kustomize/go/bin 
         
   tag:
     name: Tag Release
@@ -75,9 +70,6 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: kustomize-binaries  
-    - run: | 
-        ls -la .
-        /home/runner/work/porter-kustomize/go/bin
     - name: Upload
       uses: skx/github-action-publish-binaries@master
       env:
