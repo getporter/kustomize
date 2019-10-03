@@ -25,6 +25,8 @@ jobs:
          run: |
             mkdir -p $GOPATH/bin
             export PATH=$PATH:$GOPATH/bin
+            go get -v -t -d ./...
+            go get -u github.com/gobuffalo/packr/packr
             if [ -f Gopkg.toml ]; then
               curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
               dep ensure
