@@ -38,6 +38,7 @@ jobs:
             fi
             echo "PATH: " + $PATH
             ls -ltr /home/runner/work/porter-kustomize/go/bin
+            packr2 version
          env:
            GOPATH: /home/runner/work/porter-kustomize/go
            
