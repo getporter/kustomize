@@ -1,7 +1,6 @@
 /.github/
 /.vscode/
 /.idea/
-_site
-bin
-
-dist
+/_site
+/bin
+/dist
