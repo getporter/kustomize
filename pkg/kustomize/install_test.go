@@ -34,7 +34,7 @@ func TestMixin_UnmarshalInstallStep(t *testing.T) {
 	step := action.Steps[0]
 
 	assert.Equal(t, "porter-robotshop-cart", step.Name)
-	assert.Equal(t, "Generate the Kubernetes deployment file the Shopping Cart", step.Description)
+	assert.Equal(t, "Generate the Kubernetes deployment file for the Shopping Cart Microservice", step.Description)
 	assert.Contains(t, step.Kustomization, "kustomize/robotshop/overlays/local/cart")
 	assert.Equal(t, "manifests/", step.Manifests)
 
@@ -44,38 +44,27 @@ func TestMixin_UnmarshalInstallStep(t *testing.T) {
 func TestMixin_Install(t *testing.T) {
 	microService := "cart"
 	name := "porter-robotshop-" + microService
-	kustomization := []string{"kustomize/robotshop/overlays/local/"+microService}
+	kustomization := []string{"kustomize/robotshop/overlays/local/" + microService}
 	manifests := "manifests"
 	reorder := "legacy"
 	setArgs := map[string]string{
 		"kustomizeBaseGHToken": "{{ bundle.parameters.gh_token }}",
 	}
 
-	expectedCmd := fmt.Sprintf("kustomize build %s -o %s/%s", kustomization, manifests, microService)
+	expectedCmd := fmt.Sprintf("kustomize build %s -o %s/%s.yaml", kustomization[0], manifests, microService)
 	expectedGitCmd := fmt.Sprintf("git config --global url.https://{{ bundle.parameters.gh_token }}:@github.com/.insteadOf https://github.com/")
 	installTests := []InstallTest{
 		{
-			expectedCommand: expectedGitCmd,
+			// As we issue two exec commands we need to concatenate the two commands and separate them with
+			//  a "\n" so Porter knows to expect and compare multiple comd outputs.
+			expectedCommand: expectedGitCmd + "\n" + expectedCmd,
 			installStep: InstallStep{
 				InstallArguments: InstallArguments{
 					Step:          Step{Description: "Install Robotshop"},
 					Name:          name,
 					Kustomization: kustomization,
 					Manifests:     manifests,
-					Set:			setArgs,
-					Reorder:       reorder,
-				},
-			},
-		},
-		{
-			expectedCommand: expectedCmd,
-			installStep: InstallStep{
-				InstallArguments: InstallArguments{
-					Step:          Step{Description: "Install Robotshop"},
-					Name:          name,
-					Kustomization: kustomization,
-					Manifests:     manifests,
-					Set:			setArgs,
+					Set:           setArgs,
 					Reorder:       reorder,
 				},
 			},

@@ -17,6 +17,8 @@ func (m *Mixin) manifestHandling(step interface{}) error {
 	switch s := step.(type) {
 	case InstallStep:
 		manifests = s.Manifests
+	case UpgradeStep:
+		manifests = s.Manifests
 	case UninstallStep:
 		manifests = s.Manifests
 	default:
@@ -50,6 +52,9 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 
 	switch s := step.(type) {
 	case InstallStep:
+		kustomization = s.Kustomization
+		manifests = s.Manifests
+	case UpgradeStep:
 		kustomization = s.Kustomization
 		manifests = s.Manifests
 	case UninstallStep:

@@ -7,7 +7,7 @@ parameters:
     type: string
     default: gh_token
 
-install:
+uninstall:
   - kustomize:
       description: "Generate the Kubernetes deployment file for the Shopping Cart Microservice"
       name: porter-robotshop-cart
