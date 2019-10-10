@@ -11,8 +11,9 @@ install:
   - kustomize:
       description: "Generate the Kubernetes deployment file the Shopping Cart"
       name: porter-robotshop-cart
-      kustomization: kustomize/robotshop/overlays/local/cart
-      version: 0.3.2
+      kustomization_input:
+          - "kustomize/robotshop/overlays/local/cart"
+      kubernetes_manifest_output: manifests/
       set:
         kustomizeBaseGHToken: "{{ bundle.parameters.gh_token }}"
 

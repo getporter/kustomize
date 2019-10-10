@@ -1,7 +1,6 @@
 package kustomize
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/pkg/errors"
 	"os"
@@ -63,10 +62,14 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 	// Loop around the list of kustomization directories specified in the `porter.yaml`
 	for _, kustomizationFile := range kustomization {
 		// The path to write out the generatred Kubernetes Manifests
-		pathSegments := strings.Split(kustomizationFile, "/")
+		pathSegments := strings.Split(kustomizationFile, string(os.PathSeparator))
+
+		if strings.HasSuffix(manifests, string(os.PathSeparator)) == false {
+			manifests = manifests + string(os.PathSeparator)
+		}
 
 		// Build the kustomize command string and pipe it to the output file in the manifests directory
-		cmd := m.NewCommand("kustomize", "build", kustomizationFile, "-o", manifests+"/"+
+		cmd := m.NewCommand("kustomize", "build", kustomizationFile, "-o", manifests +
 			//	pathSegments[len(pathSegments)-1]+".yaml", "--reorder", "legacy")
 			pathSegments[len(pathSegments)-1]+".yaml")
 
@@ -74,8 +77,9 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 	}
 	// Loop and execute the list of kustomization commands
 	for _, cmd := range commands {
-		buf := new(bytes.Buffer)
-		cmd.Stdout = buf
+		//buf := new(bytes.Buffer)
+		//cmd.Stdout = buf
+		cmd.Stdout = m.Out
 		cmd.Stderr = m.Err
 
 		prettyCmd := fmt.Sprintf("%s %s", cmd.Path, strings.Join(cmd.Args, " "))
@@ -91,15 +95,12 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 			prettyCmd := fmt.Sprintf("%s %s", cmd.Path, strings.Join(cmd.Args, " "))
 			return errors.Wrap(err, fmt.Sprintf("error running command %s", prettyCmd))
 		}
-		output := buf.String()
+		//output := buf.String()
 		sensitiveFields := []string{"kustomizeBaseGHToken"}
 		m.Context.SetSensitiveValues(sensitiveFields)
-		_, err = m.Out.Write(buf.Bytes())
+		//_, err = m.Out.Write(buf.Bytes())
 		if err != nil {
 			return err
-		}
-		if m.Debug {
-			fmt.Println("DEBUG: (output) " + output)
 		}
 	}
 	return nil
