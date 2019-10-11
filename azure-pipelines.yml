@@ -69,3 +69,4 @@ steps:
     isDraft: true
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
+    assets: $(Build.ArtifactStagingDirectory)/distributableBinaries/* 
