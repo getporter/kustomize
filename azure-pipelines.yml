@@ -60,7 +60,7 @@ steps:
     action: 'create'
     target: '$(Build.SourceVersion)'
     tagSource: 'gitTag'
-    tagPattern: 'v0.1.2-beta'
+    tagPattern: 'v0.1.2-beta.2'
     isDraft: true
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
