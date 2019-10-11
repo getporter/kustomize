@@ -16,7 +16,12 @@ variables:
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
   GOROOT: '/usr/local/go1.11' # Go installation path
   GOPATH: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
-  modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's cod
+  modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
+  MajorVersion: 0
+  MedianinorVersion: 1
+  MinorVersion: 2
+  InitialReleaseTagNumber: 1
+  IncrementReleaseTagNumber: $[counter(variables['InitialReleaseTagNumber'], 0)]  
 
 steps:
 - task: Docker@1
@@ -58,7 +63,9 @@ steps:
     repositoryName: '$(Build.Repository.Name)'
     action: 'create'
     target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
+    tagSource: 'userSpecifiedTag'
+    tag: 'v$(MajorVersion).$(MedianVersion).$(MinorVersion)-beta.$(IncrementReleaseTagNumber)'
     title: 'Edit GitHub Release'
     isDraft: true
     changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
