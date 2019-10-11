@@ -69,4 +69,4 @@ steps:
     isDraft: true
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
-    assets: $(modulePath)/bin/* 
+    assets: $(modulePath)/bin/mixins/kustomize/v$(MajorVersion).$(MedianVersion).$(MinorVersion)-beta.$(IncrementReleaseTagNumber)/* 
