@@ -4,10 +4,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/go
 
 trigger:
+  tags:
+    include:
+    - v0.1.*
   branches:
     include:
-      - refs/heads/master
-      - refs/tags/*
+    - master
+    - develop
 
 pool:
   vmImage: 'Ubuntu 16.04'
