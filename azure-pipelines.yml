@@ -17,11 +17,11 @@ variables:
   GOROOT: '/usr/local/go1.11' # Go installation path
   GOPATH: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
   modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
-  MajorVersion: 0
-  MedianinVersion: 1
-  MinorVersion: 2
-  InitialReleaseTagNumber: 1
-  IncrementReleaseTagNumber: $[counter(variables['InitialReleaseTagNumber'], 0)]  
+#  MajorVersion: 0
+#  MedianinVersion: 1
+#  MinorVersion: 2
+#  InitialReleaseTagNumber: 1
+#  IncrementReleaseTagNumber: $[counter(variables['InitialReleaseTagNumber'], 0)]  
 
 steps:
 - task: Docker@1
