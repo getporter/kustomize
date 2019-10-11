@@ -23,7 +23,7 @@ steps:
   displayName: Login
   inputs:
     containerRegistryType: Container Registry
-    dockerRegistryEndpoint: deislabs-registry
+    dockerRegistryEndpoint: docker-hub
     command: login
 
 - script: |
