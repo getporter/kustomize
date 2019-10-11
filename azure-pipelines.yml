@@ -52,13 +52,6 @@ steps:
 #  displayName: 'Publish'
 #  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-
-- task: GitHubRelease@1
-  inputs:
-    gitHubConnection: 'GitHub - porter-kustomize'
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
 - task: GitHubRelease@1
   inputs:
     gitHubConnection: 'GitHub - porter-kustomize'
