@@ -46,8 +46,20 @@ steps:
   workingDirectory: '$(modulePath)'
   displayName: 'Cross Compile'
 
-- script: |
-    AZURE_STORAGE_CONNECTION_STRING=$(AZURE_STORAGE_CONNECTION_STRING) make publish
-  workingDirectory: '$(modulePath)'
-  displayName: 'Publish'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+#- script: |
+#    AZURE_STORAGE_CONNECTION_STRING=$(AZURE_STORAGE_CONNECTION_STRING) make publish
+#  workingDirectory: '$(modulePath)'
+#  displayName: 'Publish'
+#  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'GitHub - porter-kustomize'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'gitTag'
+    isDraft: true
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
