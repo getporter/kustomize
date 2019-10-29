@@ -3,7 +3,7 @@
 before:
   hooks:
     - rm -Rf dist/
-    #- dep ensure
+    - dep ensure
     - go generate ./...
 builds:
   # You can have multiple builds defined as a yaml list
@@ -70,8 +70,12 @@ builds:
     #    install "{{.Env.CLIENT_TARGET}}"
 dist: dist/mixins
 archives:
-  # Builds reference which build instances should be archived in this archive.
-  builds:
+  - # ID of this archive.
+    # Defaults to `default`.
+    id: porter-kustomize
+
+    # Builds reference which build instances should be archived in this archive.
+    builds:
     - default
     # Archive name template.
     # Defaults:
@@ -81,7 +85,7 @@ archives:
     #   - `{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}`
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
-    - replacements:
+    replacements:
       darwin: Darwin
       linux: Linux
       windows: Windows
