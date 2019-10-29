@@ -57,7 +57,12 @@ steps:
 - script: |
     curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
   workingDirectory: '$(modulePath)'
-  displayName: 'Cross Compile'
+  displayName: 'GoReleaser'
+
+- script: |
+    goreleaser --snapshot --skip-publish --rm-dist --debug
+  workingDirectory: '$(modulePath)'
+  displayName: 'Build Artefacts'
 
 #- script: |
 #    AZURE_STORAGE_CONNECTION_STRING=$(AZURE_STORAGE_CONNECTION_STRING) make publish
