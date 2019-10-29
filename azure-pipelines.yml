@@ -44,6 +44,13 @@ steps:
     echo '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Set up the Go workspace'
 
+- script: |
+    go get -u github.com/gobuffalo/packr/packr
+    curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
+    curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  workingDirectory: '$(modulePath)'
+  displayName: 'Go Get (Golang Dependencies)'
+
 #- script: |
 #    make build 
 #  workingDirectory: '$(modulePath)'
@@ -55,11 +62,8 @@ steps:
 #  displayName: 'Cross Compile'
 
 - script: |
-    curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
-    curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-    go get -u github.com/gobuffalo/packr/packr
     rm Gopkg.lock
-    dep ensure -v
+    #dep ensure -v
     ls -la
     ./bin/goreleaser --snapshot --skip-publish --rm-dist --debug --config=goreleaser.yml
   workingDirectory: '$(modulePath)'
