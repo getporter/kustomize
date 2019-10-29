@@ -60,7 +60,7 @@ steps:
     rm Gopkg.lock
     dep ensure -v
     ls -la
-    ./bin/goreleaser --snapshot --skip-publish --rm-dist --debug ---config=goreleaser.yml
+    ./bin/goreleaser --snapshot --skip-publish --rm-dist --debug --config=goreleaser.yml
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
 
