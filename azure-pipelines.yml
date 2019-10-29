@@ -45,7 +45,7 @@ steps:
   displayName: 'Set up the Go workspace'
 
 - script: |
-    go get -u github.com/gobuffalo/packr/packr
+    go get -v -u github.com/gobuffalo/packr/packr
     curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
     curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
   workingDirectory: '$(modulePath)'
