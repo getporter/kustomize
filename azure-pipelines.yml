@@ -57,7 +57,7 @@ steps:
 - script: |
     curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
     curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-    dep ensure
+    dep ensure -v
     ./bin/goreleaser --snapshot --skip-publish --rm-dist --debug
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
