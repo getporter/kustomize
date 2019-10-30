@@ -55,12 +55,15 @@ steps:
 
 - task: PublishPipelineArtifact@1
   inputs:
-    path: $(System.DefaultWorkingDirectory)/dist/mixins/build-runtime_linux_amd64
-    artifact: porter-kustomize-runtime
+    targetPath: '$(System.DefaultWorkingDirectory)/dist/mixins/build-runtime_linux_amd64/porter-kustomize-runtime'
+    artifact: 'porter-kustomize-runtime-linux'
+    publishLocation: 'pipeline'
+
 - task: PublishPipelineArtifact@1
   inputs:
-    path: $(System.DefaultWorkingDirectory)/dist/mixins/build-runtime_darwin_amd64
-    artifact: porter-kustomize-runtime
+    targetPath: '$(System.DefaultWorkingDirectory)/dist/mixins/build-runtime_darwin_amd64/porter-kustomize-runtime'
+    artifact: 'porter-kustomize-runtime-darwin'
+    publishLocation: 'pipeline'
 
 #- script: |
 #    AZURE_STORAGE_CONNECTION_STRING=$(AZURE_STORAGE_CONNECTION_STRING) make publish
