@@ -53,6 +53,15 @@ steps:
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
 
+- task: PublishPipelineArtifact@1
+  inputs:
+    path: $(System.DefaultWorkingDirectory)/dist/mixins/build-runtime_linux_amd64
+    artifact: porter-kustomize-runtime
+- task: PublishPipelineArtifact@1
+  inputs:
+    path: $(System.DefaultWorkingDirectory)/dist/mixins/build-runtime_darwin_amd64
+    artifact: porter-kustomize-runtime
+
 #- script: |
 #    AZURE_STORAGE_CONNECTION_STRING=$(AZURE_STORAGE_CONNECTION_STRING) make publish
 #  workingDirectory: '$(modulePath)'
