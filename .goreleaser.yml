@@ -5,6 +5,7 @@ before:
     - rm -Rf dist/
     - dep ensure
     - go generate ./...
+dist: dist/mixins
 builds:
   # You can have multiple builds defined as a yaml list
   - # ID of the build.
@@ -68,7 +69,6 @@ builds:
     #hooks:
     #  post:
     #    install "{{.Env.CLIENT_TARGET}}"
-dist: dist/mixins
 archives:
   - # ID of this archive.
     # Defaults to `default`.
