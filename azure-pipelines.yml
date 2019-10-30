@@ -55,13 +55,13 @@ steps:
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/dist/mixins/build-runtime_linux_amd64/porter-kustomize-runtime'
+    targetPath: '$(modulePath)/dist/mixins/build-runtime_linux_amd64/porter-kustomize-runtime'
     artifact: 'porter-kustomize-runtime-linux'
     publishLocation: 'pipeline'
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/dist/mixins/build-runtime_darwin_amd64/porter-kustomize-runtime'
+    targetPath: '$(modulePath)/dist/mixins/build-runtime_darwin_amd64/porter-kustomize-runtime'
     artifact: 'porter-kustomize-runtime-darwin'
     publishLocation: 'pipeline'
 
