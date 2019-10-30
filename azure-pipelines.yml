@@ -4,9 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/go
 
 trigger:
-  tags:
-    include:
-    - v0.1.*
+#  tags:
+#    include:
+#    - v0.1.*
   branches:
     include:
     - master
@@ -48,9 +48,7 @@ steps:
   displayName: 'Go Get (Golang Dependencies)'
 
 - script: |
-    rm Gopkg.lock
-    #dep ensure -v
-    ls -la
+    rm Gopkg.lock || true
     ./bin/goreleaser --snapshot --skip-publish --rm-dist --debug --config=goreleaser.yml
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
@@ -61,14 +59,15 @@ steps:
 #  displayName: 'Publish'
 #  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-- task: GitHubRelease@1
-  inputs:
-    gitHubConnection: 'GitHub - porter-kustomize'
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
-    title: 'GitHub Release'
-    assets: '$(modulePath)/bin/mixins/kustomize/*'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
+#- task: GitHubRelease@1
+#  inputs:
+#    gitHubConnection: 'GitHub - porter-kustomize'
+#    repositoryName: '$(Build.Repository.Name)'
+#    action: 'create'
+#    target: '$(Build.SourceVersion)'
+#    tagSource: 'gitTag'
+#    title: 'GitHub Release'
+#    assets: '$(modulePath)/bin/mixins/kustomize/*'
+#    changeLogCompareToRelease: 'lastFullRelease'
+#    changeLogType: 'commitBased'
+  
