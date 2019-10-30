@@ -71,15 +71,15 @@ steps:
 #  displayName: 'Publish'
 #  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-#- task: GitHubRelease@1
-#  inputs:
-#    gitHubConnection: 'GitHub - porter-kustomize'
-#    repositoryName: '$(Build.Repository.Name)'
-#    action: 'create'
-#    target: '$(Build.SourceVersion)'
-#    tagSource: 'gitTag'
-#    title: 'GitHub Release'
-#    assets: '$(modulePath)/bin/mixins/kustomize/*'
-#    changeLogCompareToRelease: 'lastFullRelease'
-#    changeLogType: 'commitBased'
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'GitHub - porter-kustomize'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'gitTag'
+    title: 'GitHub Release'
+    assets: '$(modulePath)/bin/mixins/kustomize/*'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
   
