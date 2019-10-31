@@ -92,14 +92,14 @@ archives:
       386: i386
       amd64: x86_64
     format: binary
-checksum:
-  name_template: "checksums.txt"
+#checksum:
+#  name_template: "checksums.txt"
   # Algorithm to be used.
   # Accepted options are sha256, sha512, sha1, crc32, md5, sha224 and sha384.
   # Default is sha256.
-  algorithm: sha256
-snapshot:
-  name_template: "{{ .Tag }}-next"
+#  algorithm: sha256
+#snapshot:
+#  name_template: "{{ .Tag }}-next"
 changelog:
   sort: asc
   filters:
