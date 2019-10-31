@@ -49,37 +49,8 @@ steps:
 
 - script: |
     rm Gopkg.lock || true
-    ./bin/goreleaser --snapshot --skip-publish --rm-dist --debug --config=goreleaser.yml
+    ./bin/goreleaser --rm-dist --debug --config=goreleaser.yml
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(modulePath)/dist/mixins/build-runtime_linux_amd64/porter-kustomize-runtime'
-    artifact: 'porter-kustomize-runtime-linux'
-    publishLocation: 'pipeline'
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(modulePath)/dist/mixins/build-runtime_darwin_amd64/porter-kustomize-runtime'
-    artifact: 'porter-kustomize-runtime-darwin'
-    publishLocation: 'pipeline'
-
-#- script: |
-#    AZURE_STORAGE_CONNECTION_STRING=$(AZURE_STORAGE_CONNECTION_STRING) make publish
-#  workingDirectory: '$(modulePath)'
-#  displayName: 'Publish'
-#  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
-- task: GitHubRelease@1
-  inputs:
-    gitHubConnection: 'GitHub - porter-kustomize'
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
-    title: 'GitHub Release'
-    assets: '$(modulePath)/bin/mixins/kustomize/*'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
-  
