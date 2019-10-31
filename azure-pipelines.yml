@@ -38,6 +38,8 @@ steps:
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Set up the Go workspace'
+  env:
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
 
 - script: |
     go get -u github.com/gobuffalo/packr/v2/packr2
