@@ -75,14 +75,15 @@ archives:
 
     # Builds reference which build instances should be archived in this archive.
     builds:
-    - "build-runtime"
+      - "build-runtime"
     # Archive name template.
     # Defaults:
     # - if format is `tar.gz`, `gz` or `zip`:
     #   - `{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}`
     # - if format is `binary`:
     #   - `{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}`
-    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    #name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
 
     replacements:
       darwin: Darwin
@@ -115,8 +116,8 @@ release:
 
   # IDs of the archives to use.
   # Defaults to all.
-  ids:
-  - porter-kustomize
+  id:
+    - porter-kustomize
 
   # If set to true, will not auto-publish the release.
   # Default is false.
