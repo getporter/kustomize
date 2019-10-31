@@ -91,7 +91,7 @@ archives:
       386: i386
       amd64: x86_64
     format: binary
-#checksum:
+checksum:
   name_template: "checksums.txt"
   # Algorithm to be used.
   # Accepted options are sha256, sha512, sha1, crc32, md5, sha224 and sha384.
@@ -130,7 +130,7 @@ release:
 
   # You can change the name of the GitHub release.
   # Default is `{{.Tag}}`
-  name_template: "{{.ProjectName}}-v{{.Version}}"
+  name_template: "{{.ProjectName}}-v{{.Version}"
 
   # You can disable this pipe in order to not upload any artifacts to
   # GitHub.
