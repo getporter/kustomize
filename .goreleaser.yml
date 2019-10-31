@@ -76,7 +76,7 @@ archives:
 
     # Builds reference which build instances should be archived in this archive.
     builds:
-    - default
+    - "build-runtime"
     # Archive name template.
     # Defaults:
     # - if format is `tar.gz`, `gz` or `zip`:
