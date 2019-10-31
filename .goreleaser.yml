@@ -61,7 +61,6 @@ builds:
       - -w -X github.com/donmstewart/porter-mixin/pkg.Version={{.Version}} -X github.com/donmstewart/porter-mixin/pkg.Commit={{.Tag}}
     env:
       - CGO_ENABLED=0
-      - CLIENT_TARGET="dist/mixins/kustomize/{{.Version}}/kustomize-{{.Env.GOOS}}-{{.Env.GOARCH}}"
     goos:
       - "{{.Env.GOOS}}"
     goarch:
@@ -93,13 +92,13 @@ archives:
       amd64: x86_64
     format: binary
 #checksum:
-#  name_template: "checksums.txt"
+  name_template: "checksums.txt"
   # Algorithm to be used.
   # Accepted options are sha256, sha512, sha1, crc32, md5, sha224 and sha384.
   # Default is sha256.
-#  algorithm: sha256
-#snapshot:
-#  name_template: "{{ .Tag }}-next"
+  algorithm: sha256
+snapshot:
+  name_template: "{{ .Tag }}-SNAPSHOT"
 changelog:
   sort: asc
   filters:
