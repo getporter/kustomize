@@ -48,7 +48,7 @@ steps:
 
 - script: |
     echo $GITHUB_TOKEN
-    echo "##vso[task.setvariable variable=GITHUB_TOKEN;]$(GITHUB_TOKEN)"
+    echo "##vso[task.setvariable variable=GITHUB_TOKEN;isOutput=true]$(GITHUB_TOKEN)"
   workingDirectory: '$(modulePath)'
   displayName: 'GitHub'
   env:
