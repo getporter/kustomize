@@ -43,21 +43,15 @@ steps:
     go get -u github.com/gobuffalo/packr/v2/packr2
     curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
     curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+    rm Gopkg.lock || true
   workingDirectory: '$(modulePath)'
   displayName: 'Go Get (Golang Dependencies)'
 
 - script: |
     echo $GITHUB_TOKEN
-    echo "##vso[task.setvariable variable=GITHUB_TOKEN;isOutput=true]$(GITHUB_TOKEN)"
-  workingDirectory: '$(modulePath)'
-  displayName: 'GitHub'
-  env:
-    GITHUB_TOKEN: $(GITHUB_TOKEN)
-
-- script: |
-    rm Gopkg.lock || true
     ./bin/goreleaser --rm-dist --debug --config=goreleaser.yml
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
-
+  env:
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
 
