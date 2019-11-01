@@ -51,7 +51,7 @@ steps:
     ./bin/goreleaser --rm-dist --debug --config=goreleaser.yml
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
-  env:
-    GITHUB_TOKEN: $(GITHUB_TOKEN)
+  #env:
+  #  GITHUB_TOKEN: $(GITHUB_TOKEN)
 
 
