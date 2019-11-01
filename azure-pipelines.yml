@@ -47,11 +47,17 @@ steps:
   displayName: 'Go Get (Golang Dependencies)'
 
 - script: |
+    echo $GITHUB_TOKEN
+    echo "##vso[task.setvariable variable=GITHUB_TOKEN;]$(GITHUB_TOKEN)"
+  workingDirectory: '$(modulePath)'
+  displayName: 'GitHub'
+  env:
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
+
+- script: |
     rm Gopkg.lock || true
     ./bin/goreleaser --rm-dist --debug --config=goreleaser.yml
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
-  #env:
-  #  GITHUB_TOKEN: $(GITHUB_TOKEN)
 
 
