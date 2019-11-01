@@ -48,7 +48,7 @@ steps:
   displayName: 'Go Get (Golang Dependencies)'
 
 - script: |
-    env GITHUB_TOKEN=$(github.token) ./bin/goreleaser --rm-dist --debug --config=goreleaser.yml
+    env GITHUB_TOKEN=$(github.token) ./bin/goreleaser --debug --config=goreleaser.yml
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
   #env: 
