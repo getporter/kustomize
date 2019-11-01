@@ -19,6 +19,7 @@ variables:
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
   GOROOT: '/usr/local/go1.11' # Go installation path
   GOPATH: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
+  GITHUB_TOKEN: 'a22645e71c50366f877c63b5b72e5ccff980203c'
   modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
 
 steps:
@@ -52,6 +53,4 @@ steps:
     ./bin/goreleaser --rm-dist --debug --config=goreleaser.yml
   workingDirectory: '$(modulePath)'
   displayName: 'Build (GoReleaser)'
-  env:
-    GITHUB_TOKEN: $(GITHUB_TOKEN)
 
