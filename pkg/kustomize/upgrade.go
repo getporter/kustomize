@@ -22,6 +22,7 @@ type UpgradeArguments struct {
 	Name          string            `yaml:"name"`
 	Kustomization []string          `yaml:"kustomization_input"`
 	Manifests     string            `yaml:"kubernetes_manifest_output"`
+	Reorder       string            `yaml:"reorder"`
 	Set           map[string]string `yaml:"set"`
 }
 

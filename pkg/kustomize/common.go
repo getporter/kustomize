@@ -49,17 +49,21 @@ func (m *Mixin) manifestHandling(step interface{}) error {
 func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.Cmd) error {
 	var kustomization []string
 	var manifests string
+	var reorder = "legacy"
 
 	switch s := step.(type) {
 	case InstallStep:
 		kustomization = s.Kustomization
 		manifests = s.Manifests
+		reorder = s.Reorder
 	case UpgradeStep:
 		kustomization = s.Kustomization
 		manifests = s.Manifests
+		reorder = s.Reorder
 	case UninstallStep:
 		kustomization = s.Kustomization
 		manifests = s.Manifests
+		reorder = s.Reorder
 	default:
 		return errors.New("Unsupported Step type")
 	}
@@ -75,8 +79,8 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 
 		// Build the kustomize command string and pipe it to the output file in the manifests directory
 		cmd := m.NewCommand("kustomize", "build", kustomizationFile, "-o", manifests +
-			//	pathSegments[len(pathSegments)-1]+".yaml", "--reorder", "legacy")
-			pathSegments[len(pathSegments)-1]+".yaml")
+			pathSegments[len(pathSegments)-1]+".yaml", "--reorder", reorder)
+			//pathSegments[len(pathSegments)-1]+".yaml")
 
 		commands = append(commands, cmd)
 	}
