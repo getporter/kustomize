@@ -55,17 +55,27 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 	case InstallStep:
 		kustomization = s.Kustomization
 		manifests = s.Manifests
-		reorder = s.Reorder
+		if s.Reorder != "" {
+			reorder = s.Reorder
+		}
 	case UpgradeStep:
 		kustomization = s.Kustomization
 		manifests = s.Manifests
-		reorder = s.Reorder
+		if s.Reorder != "" {
+			reorder = s.Reorder
+		}
 	case UninstallStep:
 		kustomization = s.Kustomization
 		manifests = s.Manifests
-		reorder = s.Reorder
+		if s.Reorder != "" {
+			reorder = s.Reorder
+		}
 	default:
 		return errors.New("Unsupported Step type")
+	}
+
+	if m.Debug {
+		fmt.Println("DEBUG: Reorder: " + reorder)
 	}
 
 	// Loop around the list of kustomization directories specified in the `porter.yaml`
@@ -78,9 +88,9 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 		}
 
 		// Build the kustomize command string and pipe it to the output file in the manifests directory
-		cmd := m.NewCommand("kustomize", "build", kustomizationFile, "-o", manifests +
-			pathSegments[len(pathSegments)-1]+".yaml", "--reorder", reorder)
-			//pathSegments[len(pathSegments)-1]+".yaml")
+		cmd := m.NewCommand("kustomize", "build", kustomizationFile, "--reorder", reorder, "-o", manifests +
+			//pathSegments[len(pathSegments)-1]+".yaml", "--reorder", reorder)
+			pathSegments[len(pathSegments)-1]+".yaml")
 
 		commands = append(commands, cmd)
 	}
