@@ -2,7 +2,7 @@ package kustomize
 
 import "fmt"
 
-const kustomizeClientVersion = "3.1.0"
+const kustomizeClientVersion = "3.8.0"
 const dockerfileLines string = `RUN apt-get update && \
  apt-get install -y curl git && \
  curl -L -O https://github.com/kubernetes-sigs/kustomize/releases/download/v%s/kustomize_%s_linux_amd64 && \
