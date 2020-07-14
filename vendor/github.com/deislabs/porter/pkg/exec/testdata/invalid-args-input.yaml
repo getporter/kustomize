@@ -1,7 +1,0 @@
-install:
-  - exec:
-      description: "Do Stuff"
-      command: bash
-      args:
-        - foo
-

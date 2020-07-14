@@ -1,9 +1,0 @@
-upgrade:
-- exec:
-    description: "Upgrade World"
-    command: bash
-    flags:
-      c: echo Hello World
-    outputs:
-      - name: world-config
-        path: config/kube.yaml
