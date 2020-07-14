@@ -6,7 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/deislabs/porter/pkg/printer"
+	"get.porter.sh/porter/pkg/printer"
 	yaml "gopkg.in/yaml.v2"
 )
 

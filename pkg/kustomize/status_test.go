@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/deislabs/porter/pkg/printer"
-	"github.com/deislabs/porter/pkg/test"
+	"get.porter.sh/porter/pkg/printer"
+	"get.porter.sh/porter/pkg/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	yaml "gopkg.in/yaml.v2"

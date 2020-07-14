@@ -4,9 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/deislabs/porter/pkg/printer"
-
-	"github.com/deislabs/porter/pkg/porter/version"
+	"get.porter.sh/porter/pkg/printer"
+	"get.porter.sh/porter/pkg/porter/version"
 	"github.com/stretchr/testify/require"
 
 	"github.com/donmstewart/porter-kustomize/pkg"

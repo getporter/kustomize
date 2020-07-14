@@ -7,17 +7,20 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/deislabs/porter/pkg/context"
+	"get.porter.sh/porter/pkg/context"
 	"github.com/ghodss/yaml" // We are not using go-yaml because of serialization problems with jsonschema, don't use this library elsewhere
 	"github.com/gobuffalo/packr/v2"
 	"github.com/pkg/errors"
 	"github.com/xeipuuv/gojsonschema"
 )
 
+const defaultKustomizelientVersion string = "v3.6.1"
+
 // Kusomtize is the logic behind the kustomize mixin
 type Mixin struct {
 	*context.Context
 	schema *packr.Box
+	KustomizeClientVersion string
 }
 
 // New kustomize mixin client, initialized with useful defaults.
@@ -25,6 +28,7 @@ func New() *Mixin {
 	return &Mixin{
 		schema:  packr.New("schema", "./schema"),
 		Context: context.New(),
+		KustomizeClientVersion: defaultKustomizelientVersion,
 	}
 }
 

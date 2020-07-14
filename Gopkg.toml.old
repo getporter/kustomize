@@ -1,0 +1,28 @@
+[[constraint]]
+  name = "github.com/deislabs/porter"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/spf13/cobra"
+  version = "0.0.3"
+
+[[constraint]]
+  name = "k8s.io/client-go"
+  version = "kubernetes-1.15.0"
+
+[[constraint]]
+  name = "github.com/gobuffalo/packr"
+  version = "2.0.0-rc.13"
+
+[[constraint]]
+  name = "github.com/xeipuuv/gojsonschema"
+  version = "v1.1.0"
+
+# We are using this because it unmarshals yaml to map[string]interface{} which
+# works better with json schema validation.
+[[constraint]]
+  name = "github.com/ghodss/yaml"
+  version = "v1.0.0"
+
+[prune]
+  go-tests = true

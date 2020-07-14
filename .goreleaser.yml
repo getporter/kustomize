@@ -3,7 +3,7 @@
 before:
   hooks:
     - rm -Rf dist/
-    - dep ensure
+    - go mod tidy
     - go generate ./...
 dist: dist/mixins
 builds:

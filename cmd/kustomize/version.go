@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/donmstewart/porter-kustomize/pkg/kustomize"
-	"github.com/deislabs/porter/pkg/porter/version"
+	"get.porter.sh/porter/pkg/porter/version"
 	"github.com/spf13/cobra"
 )
 

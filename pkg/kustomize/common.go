@@ -25,19 +25,31 @@ func (m *Mixin) manifestHandling(step interface{}) error {
 		return errors.New("Unsupported Step type " + reflect.TypeOf(step).String())
 	}
 
+	if m.Debug {
+		fmt.Println("DEBUG: Validating output directory exists")
+	}
 	// Do we have a trailing '/' if so remove it
 	if strings.HasSuffix(manifests, "/") {
 		manifests = strings.TrimSuffix(manifests, "/")
 	}
+
+	if err := m.FileSystem.MkdirAll(manifests, os.ModePerm); err != nil {
+		// We failed to create the manifest output directory so return an error
+		return errors.Wrap(err, "couldn't make output directory")
+	} else {
+		if m.Debug {
+			fmt.Println("DEBUG: Manifests directory " + manifests + " created.")
+		}
+	}
+
 	// Check if the manifest directory exists if not create it
 	if _, err := m.FileSystem.DirExists(manifests); err != nil {
 		if m.Debug {
-			fmt.Println("DEBUG: Manifests directory missing creating...")
+			fmt.Println("DEBUG: Manifests directory: " + manifests + " missing ...")
+			return err
 		}
-		if err := m.FileSystem.MkdirAll(manifests, os.ModePerm); err != nil {
-			// We failed to create the manifest output directory so return an error
-			return errors.Wrap(err, "couldn't make output directory")
-		}
+	} else {
+		fmt.Println("DEBUG: Manifests directory: " + manifests + " already exists.")
 	}
 	return nil
 }
@@ -93,6 +105,10 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 			pathSegments[len(pathSegments)-1]+".yaml")
 
 		commands = append(commands, cmd)
+
+		if m.Debug {
+			fmt.Println("DEBUG: Adding Command to list for execution: " + cmd.String())
+		}
 	}
 	// Loop and execute the list of kustomization commands
 	for _, cmd := range commands {
@@ -103,7 +119,7 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 
 		prettyCmd := fmt.Sprintf("%s %s", cmd.Path, strings.Join(cmd.Args, " "))
 		if m.Debug {
-			fmt.Println("DEBUG: " + prettyCmd)
+			fmt.Println("DEBUG: Executing: " + prettyCmd)
 		}
 		err := cmd.Start()
 		if err != nil {
@@ -130,6 +146,9 @@ func (m *Mixin) buildAndExecuteKustomizeCmds(step interface{}, commands []*exec.
 //   configuration to use the token on all git requests.
 func (m *Mixin) configureGithubToken(ghToken string) error {
 	if ghToken != "" {
+		if m.Debug {
+			fmt.Println("DEBUG: Found GitHub Token: " + ghToken)
+		}
 		var gitArgs = strings.Builder{}
 		if _, err := gitArgs.WriteString("url.https://"); err != nil {
 			return err
@@ -158,6 +177,11 @@ func (m *Mixin) configureGithubToken(ghToken string) error {
 		if err != nil {
 			return err
 		}
+	} else {
+		if m.Debug {
+			fmt.Println("DEBUG: GitHub Token not supplied.")
+		}
 	}
+
 	return nil
 }
