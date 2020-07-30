@@ -45,7 +45,8 @@ tag: dockerps/porter-robotshop-bundle:latest
 
 mixins:
   - exec
-  - kustomize
+  - kustomize:
+      clientVersion: v3.6.1
   - kubernetes
 
 # See https://porter.sh/wiring/#credentials

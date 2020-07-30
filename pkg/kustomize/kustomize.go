@@ -14,7 +14,7 @@ import (
 	"github.com/xeipuuv/gojsonschema"
 )
 
-const defaultKustomizelientVersion string = "v3.6.1"
+const defaultKustomizeClientVersion string = "v3.6.1"
 
 // Kusomtize is the logic behind the kustomize mixin
 type Mixin struct {
@@ -26,9 +26,9 @@ type Mixin struct {
 // New kustomize mixin client, initialized with useful defaults.
 func New() *Mixin {
 	return &Mixin{
-		schema:  packr.New("schema", "./schema"),
-		Context: context.New(),
-		KustomizeClientVersion: defaultKustomizelientVersion,
+		schema:                 packr.New("schema", "./schema"),
+		Context:                context.New(),
+		KustomizeClientVersion: defaultKustomizeClientVersion,
 	}
 }
 
