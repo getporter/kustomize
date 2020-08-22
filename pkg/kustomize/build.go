@@ -10,25 +10,18 @@ import (
 	"text/template"
 )
 
-//const dockerfileLines string = `RUN apt-get update && \
-// apt-get install -y curl git && \
-// curl -L -O https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F%s/kustomize_%s_linux_amd64.tar.gz && \
-// tar -zxvf kustomize_%s_linux_amd64.tar.gz \
-// mv ./kustomize_%s_linux_amd64 /usr/local/bin/kustomize && \
-// chmod a+x /usr/local/bin/kustomize
-//`
-
-const dockerfileLines string = `RUN apt-get update && \
+const (
+	dockerfileLines string = `RUN apt-get update && \
 apt-get install -y curl git && \
 curl -L -O https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F{{ .KustomizeClientVersion }}/kustomize_{{ .KustomizeClientVersion }}_linux_amd64.tar.gz && \
 tar -zxvf kustomize_{{ .KustomizeClientVersion }}_linux_amd64.tar.gz && \
 mv ./kustomize /usr/local/bin/kustomize && \
 chmod a+x /usr/local/bin/kustomize
 `
-
-// clientVersionConstraint represents the semver constraint for the Kustomize client version
-// Currently, this mixin only supports Kustomize clients versioned v3.x.x
-const clientVersionConstraint string = "^v3.x"
+	// clientVersionConstraint represents the semver constraint for the Kustomize client version
+	// Currently, this mixin only supports Kustomize clients versioned v3.x.x
+	clientVersionConstraint string = "^v3.x"
+)
 
 type MixinConfig struct {
 	ClientVersion string `yaml:"clientVersion,omitempty"`
@@ -75,7 +68,6 @@ func (m *Mixin) Build() error {
 		return err
 	}
 
-	//var cmd = fmt.Sprintf(dockerfileLines, m.KustomizeClientVersion, m.KustomizeClientVersion, m.KustomizeClientVersion, m.KustomizeClientVersion)
 	_, err = fmt.Fprint(m.Out, cmd.String())
 	if err != nil {
 		return err
