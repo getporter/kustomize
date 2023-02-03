@@ -2,12 +2,14 @@ package kustomize
 
 import (
 	"bytes"
+	"context"
 	"fmt"
+	"text/template"
+
 	"get.porter.sh/porter/pkg/exec/builder"
 	"github.com/Masterminds/semver"
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
-	"text/template"
 )
 
 const (
@@ -32,10 +34,10 @@ type BuildInput struct {
 	Config MixinConfig
 }
 
-func (m *Mixin) Build() error {
+func (m *Mixin) Build(ctx context.Context) error {
 	// Create new Builder.
 	var input BuildInput
-	err := builder.LoadAction(m.Context, "", func(contents []byte) (interface{}, error) {
+	err := builder.LoadAction(ctx, m.RuntimeConfig, "", func(contents []byte) (interface{}, error) {
 		err := yaml.Unmarshal(contents, &input)
 		return &input, err
 	})

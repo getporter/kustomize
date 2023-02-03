@@ -1,9 +1,11 @@
 package kustomize
 
 import (
+	"context"
+	"os/exec"
+
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
-	"os/exec"
 )
 
 type UpgradeAction struct {
@@ -27,7 +29,7 @@ type UpgradeArguments struct {
 }
 
 // Upgrade issues a kustomize upgrade command for a release using the provided UpgradeArguments
-func (m *Mixin) Upgrade() error {
+func (m *Mixin) Upgrade(ctx context.Context) error {
 	payload, err := m.getPayloadData()
 	if err != nil {
 		return err
@@ -47,7 +49,7 @@ func (m *Mixin) Upgrade() error {
 
 	ghToken := step.Set["kustomizeBaseGHToken"]
 
-	err = m.configureGithubToken(ghToken)
+	err = m.configureGithubToken(ctx, ghToken)
 	if err != nil {
 		return err
 	}
@@ -57,7 +59,7 @@ func (m *Mixin) Upgrade() error {
 		return err
 	}
 
-	err = m.buildAndExecuteKustomizeCmds(step, commands)
+	err = m.buildAndExecuteKustomizeCmds(ctx, step, commands)
 	if err != nil {
 		return err
 	}

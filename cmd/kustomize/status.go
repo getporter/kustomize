@@ -15,7 +15,7 @@ func buildStatusCommand(m *kustomize.Mixin) *cobra.Command {
 			return opts.ParseFormat()
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return m.Status(opts)
+			return m.Status(cmd.Context(), opts)
 		},
 	}
 

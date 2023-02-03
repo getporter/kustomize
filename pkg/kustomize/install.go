@@ -1,10 +1,12 @@
 package kustomize
 
 import (
+	"context"
 	"fmt"
+	"os/exec"
+
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
-	"os/exec"
 )
 
 // The `Porter.sh` action for Install
@@ -18,26 +20,27 @@ type InstallStep struct {
 }
 
 // The base level Structure that captures the high level data types
-//   needed by Kustomize.
 //
-//   `Kustomization` field in the Go struct and `kustomization_input` field in the `porter.yaml`
-//   is the location against which to run the `kustomize build` command. This will
-//   be an overlay directory.
+//	needed by Kustomize.
 //
-//   `Manifests` field in the Go struct and `kubernetes_manifest_output` field in the `porter.yaml`
-//   is the location into which `kustomize` will output the generated kubernetes resource yaml files.
+//	`Kustomization` field in the Go struct and `kustomization_input` field in the `porter.yaml`
+//	is the location against which to run the `kustomize build` command. This will
+//	be an overlay directory.
 //
-//   `Reorder` is a boolean flag in the Go struct and `autoDeploy` field in the `porter.yaml` which
-//    enables `kustomize` to reorder the resources within the yaml file that is to be output.
+//	`Manifests` field in the Go struct and `kubernetes_manifest_output` field in the `porter.yaml`
+//	is the location into which `kustomize` will output the generated kubernetes resource yaml files.
 //
-//    `Reorder` from the `kustomize` documentation -
+//	`Reorder` is a boolean flag in the Go struct and `autoDeploy` field in the `porter.yaml` which
+//	 enables `kustomize` to reorder the resources within the yaml file that is to be output.
 //
-//    --reorder {none | legacy } flag to the build command.
-//    The default value is legacy which means no change - continue to output resources in the legacy order
-//    (Namespaces first, ValidatingWebhookConfiguration last, etc. - see gvk.go)
-//    A value of none suppresses the sort
+//	 `Reorder` from the `kustomize` documentation -
 //
-//   `Set`, `AutoDeploy` are not currently implemented.
+//	 --reorder {none | legacy } flag to the build command.
+//	 The default value is legacy which means no change - continue to output resources in the legacy order
+//	 (Namespaces first, ValidatingWebhookConfiguration last, etc. - see gvk.go)
+//	 A value of none suppresses the sort
+//
+//	`Set`, `AutoDeploy` are not currently implemented.
 type InstallArguments struct {
 	Step `yaml:",inline"`
 
@@ -50,7 +53,7 @@ type InstallArguments struct {
 }
 
 // The public method invoked by `porter` when performing an `Install` step that has a `kustomize` mixin step
-func (m *Mixin) Install() error {
+func (m *Mixin) Install(ctx context.Context) error {
 	payload, err := m.getPayloadData()
 	if err != nil {
 		return err
@@ -71,7 +74,7 @@ func (m *Mixin) Install() error {
 
 	ghToken := step.Set["kustomizeBaseGHToken"]
 
-	err = m.configureGithubToken(ghToken)
+	err = m.configureGithubToken(ctx, ghToken)
 	if err != nil {
 		return err
 	}
@@ -81,7 +84,7 @@ func (m *Mixin) Install() error {
 		return err
 	}
 
-	err = m.buildAndExecuteKustomizeCmds(step, commands)
+	err = m.buildAndExecuteKustomizeCmds(ctx, step, commands)
 	if err != nil {
 		return err
 	}

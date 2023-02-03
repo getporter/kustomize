@@ -19,20 +19,25 @@ var schema string
 
 // Kusomtize is the logic behind the kustomize mixin
 type Mixin struct {
+	runtime.RuntimeConfig
+
 	KustomizeClientVersion string
+
+	// DebugMode indicates if the bundle is running in debug mode.
+	DebugMode bool
 }
 
 // New kustomize mixin client, initialized with useful defaults.
 func New() *Mixin {
 	return &Mixin{
-		Context:                context.New(),
+		RuntimeConfig:          runtime.NewConfig(),
 		KustomizeClientVersion: defaultKustomizeClientVersion,
 	}
 }
 
 func (m *Mixin) getPayloadData() ([]byte, error) {
 	reader := bufio.NewReader(m.In)
-	data, err := ioutil.ReadAll(reader)
+	data, err := io.ReadAll(reader)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not read the payload from STDIN")
 	}

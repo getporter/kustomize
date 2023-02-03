@@ -1,13 +1,14 @@
 package kustomize
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
 	"github.com/pkg/errors"
 
 	"get.porter.sh/porter/pkg/printer"
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 type StatusOptions struct {
@@ -31,7 +32,7 @@ type StatusArguments struct {
 }
 
 // Status reports the status for a provided set of Kustomize releases
-func (m *Mixin) Status(opts StatusOptions) error {
+func (m *Mixin) Status(ctx context.Context, opts StatusOptions) error {
 	payload, err := m.getPayloadData()
 	if err != nil {
 		return err
@@ -60,7 +61,7 @@ func (m *Mixin) Status(opts StatusOptions) error {
 	}
 
 	for _, release := range step.Releases {
-		cmd := m.NewCommand("kustomize", "status", strings.TrimSpace(fmt.Sprintf(`%s %s`, release, format)))
+		cmd := m.NewCommand(ctx, "kustomize", "status", strings.TrimSpace(fmt.Sprintf(`%s %s`, release, format)))
 
 		cmd.Stdout = m.Out
 		cmd.Stderr = m.Err

@@ -1,6 +1,7 @@
 package kustomize
 
 import (
+	"context"
 	"os/exec"
 
 	"github.com/pkg/errors"
@@ -30,7 +31,7 @@ type UninstallArguments struct {
 }
 
 // Uninstall deletes a provided set of Kustomize releases, supplying optional flags/params
-func (m *Mixin) Uninstall() error {
+func (m *Mixin) Uninstall(ctx context.Context) error {
 	payload, err := m.getPayloadData()
 	if err != nil {
 		return err
@@ -50,7 +51,7 @@ func (m *Mixin) Uninstall() error {
 
 	ghToken := step.Set["kustomizeBaseGHToken"]
 
-	err = m.configureGithubToken(ghToken)
+	err = m.configureGithubToken(ctx, ghToken)
 	if err != nil {
 		return err
 	}
@@ -60,7 +61,7 @@ func (m *Mixin) Uninstall() error {
 		return err
 	}
 
-	err = m.buildAndExecuteKustomizeCmds(step, commands)
+	err = m.buildAndExecuteKustomizeCmds(ctx, step, commands)
 	if err != nil {
 		return err
 	}
