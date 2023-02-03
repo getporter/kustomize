@@ -32,22 +32,13 @@ REGISTRY ?= $(USER)
 .PHONY: build
 build: build-client build-runtime
 
-build-runtime: generate
+build-runtime:
 	mkdir -p $(BINDIR)
 	GOARCH=$(RUNTIME_ARCH) GOOS=$(RUNTIME_PLATFORM) go build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)-runtime$(FILE_EXT) ./cmd/$(MIXIN)
 
-build-client: generate
+build-client:
 	mkdir -p $(BINDIR)
 	go build -ldflags '$(LDFLAGS)' -o $(BINDIR)/$(MIXIN)$(FILE_EXT) ./cmd/$(MIXIN)
-
-generate: packr2
-	go generate ./...
-
-HAS_PACKR2 := $(shell command -v packr2)
-packr2:
-ifndef HAS_PACKR2
-	go get -u github.com/gobuffalo/packr/v2/packr2
-endif
 
 xbuild-all:
 	$(foreach OS, $(SUPPORTED_PLATFORMS), \

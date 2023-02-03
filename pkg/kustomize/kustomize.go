@@ -1,32 +1,30 @@
-//go:generate packr2
-
 package kustomize
 
 import (
 	"bufio"
-	"io/ioutil"
+	_ "embed"
+	"io"
 	"strings"
 
-	"get.porter.sh/porter/pkg/context"
+	"get.porter.sh/porter/pkg/runtime"
 	"github.com/ghodss/yaml" // We are not using go-yaml because of serialization problems with jsonschema, don't use this library elsewhere
-	"github.com/gobuffalo/packr/v2"
 	"github.com/pkg/errors"
 	"github.com/xeipuuv/gojsonschema"
 )
 
 const defaultKustomizeClientVersion string = "v3.6.1"
 
+//go:embed schema/kustomize.json
+var schema string
+
 // Kusomtize is the logic behind the kustomize mixin
 type Mixin struct {
-	*context.Context
-	schema *packr.Box
 	KustomizeClientVersion string
 }
 
 // New kustomize mixin client, initialized with useful defaults.
 func New() *Mixin {
 	return &Mixin{
-		schema:                 packr.New("schema", "./schema"),
 		Context:                context.New(),
 		KustomizeClientVersion: defaultKustomizeClientVersion,
 	}
@@ -55,10 +53,6 @@ func (m *Mixin) ValidatePayload(b []byte) error {
 	manifestLoader := gojsonschema.NewGoLoader(s)
 
 	// Load the step schema
-	schema, err := m.GetSchema()
-	if err != nil {
-		return err
-	}
 	schemaLoader := gojsonschema.NewStringLoader(schema)
 
 	validator, err := gojsonschema.NewSchema(schemaLoader)
